@@ -13,8 +13,8 @@ def castor():
 
     @task(task_id='extract_data')
     def extract_data(ds=None, **kwargs):
-        print(CLIENT_ID)
-        print(CLIENT_SECRET)
+        client = CastorApiClient(CLIENT_ID, CLIENT_SECRET)
+        print(client.studies)
 
     extract_data()
 
