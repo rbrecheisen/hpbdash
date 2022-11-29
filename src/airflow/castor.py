@@ -1,14 +1,12 @@
-from airflow import DAG
-from airflow.decorators import task
+from airflow.decorators import dag, task
 
 
-with DAG(
-    'castor',
-    default_args={},
-    description='Pipeline to extract data from Castor EDC',
-) as dag:
+@dag(schedule=None)
+def castor():
     @task(task_id='connect')
     def connect(ds=None, **kwargs):
         print('Executing task connect...')
-    t1 = connect
-    t1
+    connect()
+
+
+castor()
