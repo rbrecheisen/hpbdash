@@ -60,6 +60,8 @@ x-airflow-common:
     AIRFLOW__CORE__LOAD_EXAMPLES: 'false'
     AIRFLOW__API__AUTH_BACKENDS: 'airflow.api.auth.backend.basic_auth'
     _PIP_ADDITIONAL_REQUIREMENTS: ${_PIP_ADDITIONAL_REQUIREMENTS:- barbell2 }
+    CASTOR_CLIENT_ID: ${CASTOR_CLIENT_ID}
+    CASTOR_CLIENT_SECRET: ${CASTOR_CLIENT_SECRET}
   volumes:
     - ./dags:/opt/airflow/dags
     - ./logs:/opt/airflow/logs
@@ -143,8 +145,6 @@ services:
       # Required to handle warm shutdown of the celery workers properly
       # See https://airflow.apache.org/docs/docker-stack/entrypoint.html#signal-propagation
       DUMB_INIT_SETSID: "0"
-      CASTOR_CLIENT_ID: ${CASTOR_CLIENT_ID}
-      CASTOR_CLIENT_SECRET: ${CASTOR_CLIENT_SECRET}
     restart: always
     depends_on:
       <<: *airflow-common-depends-on
