@@ -1,3 +1,5 @@
 django
 apache-airflow
+apache-airflow-providers-postgres
+psycopg2-binary
 barbell2
