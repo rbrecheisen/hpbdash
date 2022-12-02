@@ -1,5 +1,9 @@
 .idea/
 
+airflow/dags
+airflow/logs
+airflow/plugins
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
