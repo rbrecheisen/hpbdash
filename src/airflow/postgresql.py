@@ -24,6 +24,7 @@ def postgresql():
     create_table = PostgresOperator(
         task_id='create_table',
         sql="""
+        SET CONNECTION TO castor;
         CREATE TABLE IF NOT EXISTS castor (
             record_id SERIAL PRIMARY KEY,
             name VARCHAR NOT NULL,
