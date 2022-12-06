@@ -11,7 +11,7 @@ def print_start():
     print('starting...')
 
 
-def create_table():
+def create_table_callable():
     print('connecting to database...')
     connection = psycopg2.connect(host='172.28.0.2', database='postgres', user='postgres', password='postgres')
     print(connection.info)
@@ -33,7 +33,7 @@ def postgresql():
 
     create_table = PythonOperator(
         task_id='create_table',
-        python_callable=create_table,
+        python_callable=create_table_callable,
     )
 
     # # TODO: create PythonOperator that connects to PostgreSQL!!!
