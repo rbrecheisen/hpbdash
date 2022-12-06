@@ -36,7 +36,6 @@ def postgresql():
         python_callable=create_table_callable,
     )
 
-    # # TODO: create PythonOperator that connects to PostgreSQL!!!
     # create_table = PostgresOperator(
     #     task_id='create_table',
     #     sql="""
