@@ -295,6 +295,5 @@ volumes:
   postgres-db-volume:
 
 networks:
-  airflow_default:
-  castor:
+  db_default:
     external: true
