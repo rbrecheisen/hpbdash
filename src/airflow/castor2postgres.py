@@ -38,8 +38,19 @@ def get_client_data(client):
     study_id = client.get_study_id(client.get_study('ESPRESSO_v2.0_DPCA'))
     print('getting fields...')
     fields = client.get_fields(study_id)
+    field_ids = {}
     for k in data.keys():
-        print(client.get_field(fields, k))
+        field_id = client.get_field_id(client.get_field(fields, k))
+        field_ids[k] = field_id
+    print('getting records...')
+    records = client.get_records(study_id)
+    print('collecting field values for each record...')
+    for record in records:
+        record_id = client.get_record_id(record)
+        for var_name, field_id in field_ids.items():
+            field_value = client.get_field_value(study_id, record_id, field_id)
+            data[var_name].append(field_value)
+    print('done')
     return data
 
 
