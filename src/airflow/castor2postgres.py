@@ -14,7 +14,7 @@ def init_table(db_session):
     sql = """
     DROP TABLE IF EXISTS castor;
     CREATE TABLE castor (
-        record_id SERIAL PRIMARY_KEY,
+        record_id SERIAL PRIMARY KEY,
         patient_id VARCHAR NOT NULL,
         gender VARCHAR NOT NULL,
         birth_date DATE NOT NULL,
