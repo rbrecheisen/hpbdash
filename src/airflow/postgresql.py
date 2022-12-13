@@ -11,14 +11,6 @@ def print_start():
     print('starting...')
 
 
-def create_table_callable():
-    print('connecting to database...')
-    connection = psycopg2.connect(host='postgres-castor', database='postgres', user='castor', password='castor')
-    print(connection.info)
-    print('closing...')
-    connection.close()
-
-
 def print_end():
     print('done')
 
@@ -30,11 +22,6 @@ def postgresql():
         task_id='start',
         python_callable=print_start,
     )
-
-    # create_table = PythonOperator(
-    #     task_id='create_table',
-    #     python_callable=create_table_callable,
-    # )
 
     create_table = PostgresOperator(
         task_id='create_table',
