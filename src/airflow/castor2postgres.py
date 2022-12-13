@@ -29,7 +29,11 @@ def init_table(db_session):
 
 
 def get_client_data(client):
-    data = {}
+    data = {
+        'dpca_idcode': [],
+        'dpca_geslacht': [],
+        'dpca_gebdat': [],
+    }
     print('getting study ID from client...')
     study_id = client.get_study_id(client.get_study('ESPRESSO_v2.0_DPCA'))
     print('getting fields...')
@@ -48,7 +52,6 @@ def castor2postgres():
         client = CastorApiClient(CLIENT_ID, CLIENT_SECRET)
         print('getting data...')
         client_data = get_client_data(client)
-        print(client_data)
         # print('connecting to Postgres database...')
         # db_session = psycopg2.connect(host='postgres-castor', database='postgres', user='castor', password='castor')
 
