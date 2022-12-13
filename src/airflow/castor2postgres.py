@@ -12,8 +12,7 @@ CLIENT_SECRET = os.environ['CASTOR_CLIENT_SECRET']
 def init_table(db_session):
     db_cursor = db_session.cursor()
     sql = """
-    DROP TABLE IF EXISTS castor;
-    CREATE TABLE castor (
+    CREATE TABLE IF NOT EXISTS castor (
         record_id SERIAL PRIMARY KEY,
         patient_id VARCHAR NOT NULL,
         gender VARCHAR NOT NULL,
@@ -29,6 +28,17 @@ def init_table(db_session):
     db_session.commit()
 
 
+def get_client_data(client):
+    data = {}
+    print('getting study ID from client...')
+    study_id = client.get_study_id(client.get_study('ESPRESSO_v2.0_DPCA'))
+    print('getting fields...')
+    fields = client.get_fields(study_id)
+    for k in data.keys():
+        print(client.get_field(fields, k))
+    return data
+
+
 @dag(schedule=None, start_date=datetime.now())
 def castor2postgres():
 
@@ -36,12 +46,11 @@ def castor2postgres():
     def extract_data(ds=None, **kwargs):
         print('connecting to Castor...')
         client = CastorApiClient(CLIENT_ID, CLIENT_SECRET)
-        print(client.studies)
-        print('connecting to Postgres database...')
-        db_session = psycopg2.connect(host='postgres-castor', database='postgres', user='castor', password='castor')
-        print('initializing table...')
-        init_table(db_session)
-        print('done')
+        print('getting data...')
+        client_data = get_client_data(client)
+        print(client_data)
+        # print('connecting to Postgres database...')
+        # db_session = psycopg2.connect(host='postgres-castor', database='postgres', user='castor', password='castor')
 
     extract_data()
 
