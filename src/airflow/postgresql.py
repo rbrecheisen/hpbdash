@@ -13,7 +13,7 @@ def print_start():
 
 def create_table_callable():
     print('connecting to database...')
-    connection = psycopg2.connect(host='172.28.0.2', database='postgres', user='postgres', password='postgres')
+    connection = psycopg2.connect(host='postgres-castor', database='postgres', user='castor', password='castor')
     print(connection.info)
     print('closing...')
     connection.close()
