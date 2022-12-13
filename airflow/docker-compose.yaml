@@ -115,6 +115,8 @@ services:
       <<: *airflow-common-depends-on
       airflow-init:
         condition: service_completed_successfully
+    networks:
+      - db_default
 
   airflow-scheduler:
     <<: *airflow-common
@@ -150,6 +152,8 @@ services:
       <<: *airflow-common-depends-on
       airflow-init:
         condition: service_completed_successfully
+    networks:
+      - db_default
 
   airflow-triggerer:
     <<: *airflow-common
