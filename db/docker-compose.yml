@@ -1,15 +1,19 @@
 services:
-  db:
-    image: postgres:latest
-    restart: always
+  postgres-castor:
+    image: postgres:13
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=castor
-    ports:
-      - 5434:5432
+      POSTGRES_USER: castor
+      POSTGRES_PASSWORD: castor
+      POSTGRES_DB: castor
     volumes:
-      - db:/var/lib/postgresql/data
+      - postgres-castor-db-volume:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "castor"]
+      interval: 5s
+      retries: 5
+    restart: always
 volumes:
-  db:
-    driver: local
+  postgres-castor-db:
+networks:
+  airflow_default:
+    external: true
