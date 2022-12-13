@@ -73,8 +73,6 @@ x-airflow-common:
       condition: service_healthy
     postgres:
       condition: service_healthy
-  networks:
-    - db_default
 
 services:
   postgres:
@@ -117,6 +115,8 @@ services:
       <<: *airflow-common-depends-on
       airflow-init:
         condition: service_completed_successfully
+    networks:
+      - db_default
 
   airflow-scheduler:
     <<: *airflow-common
@@ -131,6 +131,8 @@ services:
       <<: *airflow-common-depends-on
       airflow-init:
         condition: service_completed_successfully
+    networks:
+      - db_default
 
   airflow-worker:
     <<: *airflow-common
@@ -152,6 +154,8 @@ services:
       <<: *airflow-common-depends-on
       airflow-init:
         condition: service_completed_successfully
+    networks:
+      - db_default
 
   airflow-triggerer:
     <<: *airflow-common
@@ -166,6 +170,8 @@ services:
       <<: *airflow-common-depends-on
       airflow-init:
         condition: service_completed_successfully
+    networks:
+      - db_default
 
   airflow-init:
     <<: *airflow-common
