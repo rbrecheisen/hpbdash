@@ -293,7 +293,3 @@ services:
 
 volumes:
   postgres-db-volume:
-
-networks:
-  db_default:
-    external: true
