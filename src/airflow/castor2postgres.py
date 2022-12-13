@@ -1,4 +1,5 @@
 import os
+import psycopg2
 
 from barbell2.castor.api import CastorApiClient
 from datetime import datetime
@@ -15,6 +16,8 @@ def castor():
     def extract_data(ds=None, **kwargs):
         client = CastorApiClient(CLIENT_ID, CLIENT_SECRET)
         print(client.studies)
+        db_session = psycopg2.connect(host='postgres-castor', database='postgres', user='castor', password='castor')
+        print(db_session.info)
 
     extract_data()
 
