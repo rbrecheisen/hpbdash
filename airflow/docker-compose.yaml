@@ -89,20 +89,6 @@ services:
       retries: 5
     restart: always
 
-#  postgres-castor:
-#    image: postgres:13
-#    environment:
-#      POSTGRES_USER: castor
-#      POSTGRES_PASSWORD: castor
-#      POSTGRES_DB: castor
-#    volumes:
-#      - postgres-castor-db-volume:/var/lib/postgresql/data
-#    healthcheck:
-#      test: ["CMD", "pg_isready", "-U", "castor"]
-#      interval: 5s
-#      retries: 5
-#    restart: always
-
   redis:
     image: redis:latest
     expose:
