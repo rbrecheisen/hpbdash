@@ -31,22 +31,22 @@ def postgresql():
         python_callable=print_start,
     )
 
-    create_table = PythonOperator(
-        task_id='create_table',
-        python_callable=create_table_callable,
-    )
-
-    # create_table = PostgresOperator(
+    # create_table = PythonOperator(
     #     task_id='create_table',
-    #     sql="""
-    #     CREATE TABLE IF NOT EXISTS castor (
-    #         record_id SERIAL PRIMARY KEY,
-    #         name VARCHAR NOT NULL,
-    #         birth_date DATE NOT NULL
-    #     );
-    #     """,
-    #     postgres_conn_id='postgres',
+    #     python_callable=create_table_callable,
     # )
+
+    create_table = PostgresOperator(
+        task_id='create_table',
+        sql="""
+        CREATE TABLE IF NOT EXISTS castor (
+            record_id SERIAL PRIMARY KEY,
+            name VARCHAR NOT NULL,
+            birth_date DATE NOT NULL
+        );
+        """,
+        postgres_conn_id='postgres',
+    )
 
     end = PythonOperator(
         task_id='end',
