@@ -8,7 +8,7 @@ variables that are relevant for performance.
 Example variables:
 
 - Patient ID (text)
-- Age (integer)
+- Birth Date (date)
 - Gender (male/female)
 - Body Weight (kg)
 - Body Mass Index (kg/m2)
