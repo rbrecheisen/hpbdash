@@ -15,5 +15,4 @@ services:
 volumes:
   postgres-castor-db-volume:
 networks:
-  airflow_default:
-    external: true
+  castor:
