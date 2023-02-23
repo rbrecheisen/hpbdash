@@ -19,8 +19,10 @@ def castor2sqlite():
     @task(task_id='extract_data')
     def extract_data():
         context = get_current_context()
+        # study_name = context['dag_run'].conf.get('study_name')
+        study_name = 'ESPRESSO_v2.0_DPCA'
         converter = CastorToSqlite(
-            study_name=context['dag_run'].conf.get('study_name'),
+            study_name=study_name,
             client_id=CLIENT_ID,
             client_secret=CLIENT_SECRET,
             output_db_file='/tmp/castor.db',  # Note: DB file is written to data volume accessible via airflow-worker container!
