@@ -18,6 +18,7 @@ def castor2sqlite():
             study_name='ESPRESSO_v2.0_DPCA',
             client_id=CLIENT_ID,
             client_secret=CLIENT_SECRET,
+            output_db_file='/tmp/castor.db',
             cache=True,
             record_offset=0,
             max_nr_records=1,
