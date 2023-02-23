@@ -68,8 +68,8 @@ def castor2postgres():
         client = CastorApiClient(CLIENT_ID, CLIENT_SECRET)
         print('getting data...')
         client_data = get_client_data(client)
-        # print('connecting to Postgres database...')
-        # db_session = psycopg2.connect(host='postgres-castor', database='postgres', user='castor', password='castor')
+        print('connecting to Postgres database...')
+        db_session = psycopg2.connect(host='postgres-castor', database='postgres', user='castor', password='castor')
 
     extract_data()
 
