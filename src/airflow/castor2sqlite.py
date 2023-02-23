@@ -8,6 +8,7 @@ from barbell2.castor.castor2sqlite import CastorToSqlite
 STUDY_NAME = os.environ['CASTOR_STUDY_NAME']
 CLIENT_ID = os.environ['CASTOR_CLIENT_ID']
 CLIENT_SECRET = os.environ['CASTOR_CLIENT_SECRET']
+DB_FILE = '/tmp/castor.db'
 
 LOGGER = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
@@ -17,19 +18,12 @@ logging.basicConfig(level=logging.INFO)
 def castor2sqlite():
 
     @task(task_id='extract_data')
-    def extract_data(study_name, client_id, client_secret):
-        if study_name is None:
-            study_name = STUDY_NAME
-            client_id = CLIENT_ID
-            client_secret = CLIENT_SECRET
-            LOGGER.info('Using environment STUDY_NAME, CLIENT_ID and CLIENT_SECRET')
-        else:
-            LOGGER.info('Using context STUDY_NAME, CLIENT_ID and CLIENT_SECRET')
+    def extract_data():
         converter = CastorToSqlite(
-            study_name=study_name,
-            client_id=client_id,
-            client_secret=client_secret,
-            output_db_file='/tmp/castor.db',  # Note: DB file is written to data volume accessible via airflow-worker container!
+            study_name=STUDY_NAME,
+            client_id=CLIENT_ID,
+            client_secret=CLIENT_SECRET,
+            output_db_file=DB_FILE,  # Note: DB file is written to data volume accessible via airflow-worker container!
             cache=True,
             record_offset=0,
             max_nr_records=1,
