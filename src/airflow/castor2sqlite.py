@@ -3,6 +3,7 @@ import logging
 
 from datetime import datetime
 from airflow.decorators import dag, task
+from airflow.operators.python import get_current_context
 from barbell2.castor.castor2sqlite import CastorToSqlite
 
 CLIENT_ID = os.environ['CASTOR_CLIENT_ID']
@@ -16,9 +17,10 @@ logging.basicConfig(level=logging.INFO)
 def castor2sqlite():
 
     @task(task_id='extract_data')
-    def extract_data(**kwargs):
+    def extract_data():
+        context = get_current_context()
         converter = CastorToSqlite(
-            study_name=kwargs['study_name'],
+            study_name=context['dag_run'].conf.get('study_name'),
             client_id=CLIENT_ID,
             client_secret=CLIENT_SECRET,
             output_db_file='/tmp/castor.db',  # Note: DB file is written to data volume accessible via airflow-worker container!
