@@ -19,8 +19,9 @@ def castor2sqlite():
         if client_id is None:
             client_id = CLIENT_ID
             client_secret = CLIENT_SECRET
-        else:
             LOGGER.info('Using environment CLIENT_ID and CLIENT_SECRET')
+        else:
+            LOGGER.info('Using context CLIENT_ID and CLIENT_SECRET')
         converter = CastorToSqlite(
             study_name='ESPRESSO_v2.0_DPCA',
             client_id=client_id,
