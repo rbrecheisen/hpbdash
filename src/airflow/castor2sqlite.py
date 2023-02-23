@@ -5,8 +5,10 @@ from datetime import datetime
 from airflow.decorators import dag, task
 from barbell2.castor.castor2sqlite import CastorToSqlite
 
+STUDY_NAME = os.environ['CASTOR_STUDY_NAME']
 CLIENT_ID = os.environ['CASTOR_CLIENT_ID']
 CLIENT_SECRET = os.environ['CASTOR_CLIENT_SECRET']
+
 LOGGER = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
 
@@ -15,15 +17,16 @@ logging.basicConfig(level=logging.INFO)
 def castor2sqlite():
 
     @task(task_id='extract_data')
-    def extract_data(client_id, client_secret):
-        if client_id is None:
+    def extract_data(study_name, client_id, client_secret):
+        if study_name is None:
+            study_name = STUDY_NAME
             client_id = CLIENT_ID
             client_secret = CLIENT_SECRET
-            LOGGER.info('Using environment CLIENT_ID and CLIENT_SECRET')
+            LOGGER.info('Using environment STUDY_NAME, CLIENT_ID and CLIENT_SECRET')
         else:
-            LOGGER.info('Using context CLIENT_ID and CLIENT_SECRET')
+            LOGGER.info('Using context STUDY_NAME, CLIENT_ID and CLIENT_SECRET')
         converter = CastorToSqlite(
-            study_name='ESPRESSO_v2.0_DPCA',
+            study_name=study_name,
             client_id=client_id,
             client_secret=client_secret,
             output_db_file='/tmp/castor.db',  # Note: DB file is written to data volume accessible via airflow-worker container!
