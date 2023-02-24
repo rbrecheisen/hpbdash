@@ -26,7 +26,7 @@ def castor2sqlite():
             study_name=STUDY_NAME,
             client_id=CLIENT_ID,
             client_secret=CLIENT_SECRET,
-            output_db_file=f'/data/castor_{timestamp}.db',  # This file is written to the Airflow worker container!
+            output_db_file=f'/opt/airflow/db/castor_{timestamp}.db',  # This file is written to the Airflow worker container!
             cache=True,
             record_offset=0,
             max_nr_records=1,

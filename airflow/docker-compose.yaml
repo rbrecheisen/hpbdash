@@ -67,6 +67,7 @@ x-airflow-common:
     - ./dags:/opt/airflow/dags
     - ./logs:/opt/airflow/logs
     - ./plugins:/opt/airflow/plugins
+    - ./db:/opt/airflow/db
   user: "${AIRFLOW_UID:-50000}:0"
   depends_on:
     &airflow-common-depends-on
@@ -151,8 +152,6 @@ services:
       <<: *airflow-common-depends-on
       airflow-init:
         condition: service_completed_successfully
-    volumes:
-      - airflow-worker-data-volume:/data
 
   airflow-triggerer:
     <<: *airflow-common
@@ -282,4 +281,3 @@ services:
 
 volumes:
   postgres-db-volume:
-  airflow-worker-data-volume:
