@@ -14,7 +14,7 @@ LOGGER = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
 
 
-@dag(schedule='*/5 * * * *', start_date=pendulum.now().subtract(minutes=1), catchup=False)
+@dag(schedule='*/10 * * * *', start_date=pendulum(2023, 2, 23), catchup=False)
 def castor2sqlite():
 
     @task(task_id='extract_data')
