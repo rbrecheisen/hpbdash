@@ -15,7 +15,7 @@ LOGGER = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
 
 
-@dag(schedule='*/1 * * * *', start_date=pendulum.now().subtract(minutes=1), catchup=False)
+@dag(schedule=None, start_date=pendulum.now().subtract(minutes=1), catchup=False)
 def castor2sqlite():
 
     @task(task_id='extract_data')
@@ -40,15 +40,13 @@ def castor2sqlite():
         with open('/tmp/{}.txt'.format(timestamp), 'w') as f:
             f.write('hello!')
 
-    # extract_data()
-    save_file()
+    extract_data()
+    # save_file()
 
 castor2sqlite()
 
 
 if __name__ == '__main__':
     def main():
-        x1 = datetime.now()
-        x2 = x1 - timedelta(minutes=1)
-        print(f'x1: {x1}, x2: {x2}')
+        pass
     main()
