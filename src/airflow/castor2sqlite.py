@@ -7,7 +7,6 @@ from airflow.operators.python import get_current_context
 from barbell2.castor.castor2sqlite import CastorToSqlite
 
 STUDY_NAME = 'ESPRESSO_v2.0_DPCA'
-TIMEZONE = 'Europe/Amsterdam'
 CLIENT_ID = os.environ['CASTOR_CLIENT_ID']
 CLIENT_SECRET = os.environ['CASTOR_CLIENT_SECRET']
 OUTPUT_DB_FILE = '/tmp/castor.db'  # DB file is written to data volume accessible via airflow-worker container!
