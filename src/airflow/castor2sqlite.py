@@ -27,7 +27,7 @@ def castor2sqlite():
             study_name=STUDY_NAME,
             client_id=CLIENT_ID,
             client_secret=CLIENT_SECRET,
-            output_db_file=f'castor_{timestamp}.db',
+            output_db_file=f'/tmp/castor_{timestamp}.db',
             cache=True,
             record_offset=0,
             max_nr_records=1,
