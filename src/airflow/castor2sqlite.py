@@ -33,6 +33,17 @@ def castor2sqlite():
         )
         converter.execute()
 
-    extract_data()
+    @task(task_id='save_file')
+    def save_file():
+        """ This is what should happen:
+            (1) Generate timestamp now()
+            (2) Write file called timestamp.txt
+        """
+        timestamp = datetime.now().strftime('%m-%d-%Y_%H:%M:%S')
+        with open('/tmp/{}.txt'.format(timestamp), 'w') as f:
+            f.write('hello!')
+
+    # extract_data()
+    save_file()
 
 castor2sqlite()
