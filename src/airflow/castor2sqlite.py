@@ -9,7 +9,6 @@ from barbell2.castor.castor2sqlite import CastorToSqlite
 STUDY_NAME = 'ESPRESSO_v2.0_DPCA'
 CLIENT_ID = os.environ['CASTOR_CLIENT_ID']
 CLIENT_SECRET = os.environ['CASTOR_CLIENT_SECRET']
-OUTPUT_DB_FILE = '/tmp/castor.db'  # DB file is written to data volume accessible via airflow-worker container!
 
 LOGGER = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
@@ -27,7 +26,7 @@ def castor2sqlite():
             study_name=STUDY_NAME,
             client_id=CLIENT_ID,
             client_secret=CLIENT_SECRET,
-            output_db_file=f'/tmp/castor_{timestamp}.db',
+            output_db_file=f'/data/castor_{timestamp}.db',  # This file is written to the Airflow worker container!
             cache=True,
             record_offset=0,
             max_nr_records=1,
@@ -35,14 +34,7 @@ def castor2sqlite():
         )
         converter.execute()
 
-    @task(task_id='save_file')
-    def save_file():
-        timestamp = pendulum.now().strftime('%m-%d-%Y_%H:%M:%S')
-        with open('/tmp/{}.txt'.format(timestamp), 'w') as f:
-            f.write('hello!')
-
     extract_data()
-    # save_file()
 
 castor2sqlite()
 

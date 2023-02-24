@@ -151,6 +151,8 @@ services:
       <<: *airflow-common-depends-on
       airflow-init:
         condition: service_completed_successfully
+    volumes:
+      - airflow-worker-data-volume:/data
 
   airflow-triggerer:
     <<: *airflow-common
@@ -280,3 +282,4 @@ services:
 
 volumes:
   postgres-db-volume:
+  airflow-worker-data-volume:
