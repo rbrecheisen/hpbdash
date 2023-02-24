@@ -19,7 +19,7 @@ def castor2sqlite():
 
     @task(task_id='extract_data')
     def extract_data():
-        timestamp = pendulum.now().strftime('%Y%m%d%H%M%s')
+        timestamp = pendulum.now().strftime('%Y%m%d%H%M%S')
         # context = get_current_context()
         # study_name = context['dag_run'].conf.get('study_name')
         converter = CastorToSqlite(
