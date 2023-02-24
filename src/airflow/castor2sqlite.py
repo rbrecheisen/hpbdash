@@ -13,7 +13,7 @@ LOGGER = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
 
 
-@dag(schedule='*/1 * * * *', start_date=datetime.now()-timedelta(minutes=1), catchup=False)
+@dag(schedule='*/2 * * * *', start_date=datetime.now()-timedelta(minutes=1), catchup=False)
 def castor2sqlite():
 
     @task(task_id='extract_data')
