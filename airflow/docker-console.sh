@@ -1,2 +1,2 @@
 #!/bin/bash
-docker-compose exec airflow-webserver bash
+docker-compose exec airflow-${1} bash
