@@ -1,7 +1,7 @@
 import os
 import logging
 
-from datetime import datetime
+from datetime import datetime, timedelta
 from airflow.decorators import dag, task
 from airflow.operators.python import get_current_context
 from barbell2.castor.castor2sqlite import CastorToSqlite
@@ -13,7 +13,7 @@ LOGGER = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
 
 
-@dag(schedule_interval='@hourly', start_date=datetime.now())
+@dag(schedule='*/1 * * * *', start_date=datetime.now()-timedelta(minutes=1))
 def castor2sqlite():
 
     @task(task_id='extract_data')
@@ -47,3 +47,11 @@ def castor2sqlite():
     save_file()
 
 castor2sqlite()
+
+
+if __name__ == '__main__':
+    def main():
+        x1 = datetime.now()
+        x2 = x1 - timedelta(minutes=1)
+        print(f'x1: {x1}, x2: {x2}')
+    main()
