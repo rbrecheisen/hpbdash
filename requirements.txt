@@ -1,6 +1,3 @@
-# django
-# apache-airflow
-# apache-airflow-providers-postgres
-# psycopg2-binary
+django
 barbell2
 prefect
