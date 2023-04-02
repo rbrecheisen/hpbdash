@@ -2,7 +2,7 @@ import os
 import logging
 
 from prefect import flow, task
-from barbell2.castor.api import CastorApiClient
+from barbell2.castor.castor2sqlite import CastorToSqlite
 
 
 STUDY = 'ESPRESSO_v2.0_DPCA'
@@ -15,19 +15,21 @@ logging.basicConfig(level=logging.INFO)
 
 @task(name='extract_data')
 def extract_data():
-    """ 
-    Uses Castor API to extract record and field data. 
-    """
-    client = CastorApiClient(CLIENT_ID, CLIENT_SECRET)
-    study = client.get_study(STUDY)
-    print(study)
+    extractor = CastorToSqlite(
+        STUDY, 
+        CLIENT_ID, 
+        CLIENT_SECRET, 
+        output_db_file='castor.db', 
+        record_offset=0, 
+        max_nr_records=1,
+        rate_limiting=True,
+    )
+    data = extractor.execute()
+    print(data)
 
 
 @flow(name='castor2sqlite')
 def castor2sqlite():
-    """ 
-    Extracts Castor data and builds queryable SQL database from this data.
-    """
     extract_data()
 
 
