@@ -1,6 +1,5 @@
 import os
 import logging
-import datetime
 
 from prefect import flow, task
 from barbell2.castor.api import CastorApiClient
@@ -14,12 +13,11 @@ LOGGER = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
 
 
-@task(name='extract_data', retries=2, retry_delay_seconds=2)
+@task(name='extract_data')
 def extract_data():
     """ 
     Uses Castor API to extract record and field data. 
     """
-    raise RuntimeError()
     client = CastorApiClient(CLIENT_ID, CLIENT_SECRET)
     study = client.get_study(STUDY)
     print(study)
