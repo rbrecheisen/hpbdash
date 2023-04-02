@@ -1,0 +1,40 @@
+###
+### A complete description of a Prefect Deployment for flow 'castor2sqlite'
+###
+name: castor2sqlite
+description: Extracts Castor data and builds queryable SQL database from this data.
+version: a3869f36bb40c3ff302785ce700a7a71
+# The work queue that will handle this deployment's runs
+work_queue_name: test
+work_pool_name: null
+tags: []
+parameters: {}
+schedule: null
+is_schedule_active: null
+infra_overrides: {}
+infrastructure:
+  type: process
+  env: {}
+  labels: {}
+  name: null
+  command: null
+  stream_output: true
+  working_dir: null
+  block_type_slug: process
+  _block_type_slug: process
+
+###
+### DO NOT EDIT BELOW THIS LINE
+###
+flow_name: castor2sqlite
+manifest_path: null
+storage: null
+path: /Users/ralph/dev/hpbdash/src/prefect/deployments/castor2sqlite
+entrypoint: castor2sqlite.py:castor2sqlite
+parameter_openapi_schema:
+  title: Parameters
+  type: object
+  properties: {}
+  required: null
+  definitions: null
+timestamp: '2023-04-02T11:16:35.593084+00:00'
