@@ -1,3 +1,5 @@
+import json
+
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 
@@ -33,6 +35,5 @@ def delete_query(request, query_id):
 def run_query(request, query_id):
     query = QueryModel.objects.get(pk=query_id)
     query_engine = CastorQuery('/Users/Ralph/Desktop/castor.db')
-    query_engine.execute(query.sql_statement)
-    query_engine.to_csv('/Users/Ralph/Desktop/castor_query_results.csv')
-    return render(request, 'query_result.html', context={'query_result': None})
+    df = query_engine.execute(query.sql_statement)
+    return render(request, 'query_result.html', context={'query': query, 'columns': df.columns, 'data': df.to_numpy()})

@@ -9,7 +9,7 @@
                     <form action="/queries/create" method="post" enctype="multipart/form-data">
                         {% csrf_token %}
                         <input type="text" name="name" placeholder="Enter name" /><br>
-                        <input type="text" name="sql_statement" placeholder="Enter SQL statement" style="width: 700px;" />
+                        <textarea name="sql_statement" placeholder="Enter SQL statement" rows="5" cols="50"></textarea>
                         <button type="submit" class="btn btn-primary">Add</button>
                     </form>
                 </div>

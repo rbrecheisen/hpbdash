@@ -2,25 +2,19 @@
 ### A complete description of a Prefect Deployment for flow 'castor2sqlite'
 ###
 name: castor2sqlite
-description: Extracts Castor data and builds queryable SQL database from this data.
-version: 843b5a8d05afae094e80e3f14de65f0a
+description: null
+version: 67027f80c7b8d16389cc431a538794c9
 # The work queue that will handle this deployment's runs
 work_queue_name: test
-work_pool_name: default-agent-pool
+work_pool_name: null
 tags: []
 parameters: {}
 schedule:
   cron: '*/10 * * * *'
   timezone: null
   day_or: true
-is_schedule_active: true
+is_schedule_active: null
 infra_overrides: {}
-
-###
-### DO NOT EDIT BELOW THIS LINE
-###
-flow_name: castor2sqlite
-manifest_path: null
 infrastructure:
   type: process
   env: {}
@@ -29,13 +23,16 @@ infrastructure:
   command: null
   stream_output: true
   working_dir: null
-  _block_document_id: ca9673d5-6eb4-4bb9-a5aa-85cb56d486ef
-  _block_document_name: anonymous-eac5bc77-6ba0-4566-92ec-fcbe5ed8c673
-  _is_anonymous: true
   block_type_slug: process
   _block_type_slug: process
+
+###
+### DO NOT EDIT BELOW THIS LINE
+###
+flow_name: castor2sqlite
+manifest_path: null
 storage: null
-path: /Users/ralph/dev/hpbdash/src/prefect/deployments/castor2sqlite
+path: /Users/Ralph/dev/hpbdash/src/prefect/deployments/castor2sqlite
 entrypoint: castor2sqlite.py:castor2sqlite
 parameter_openapi_schema:
   title: Parameters
@@ -43,4 +40,4 @@ parameter_openapi_schema:
   properties: {}
   required: null
   definitions: null
-timestamp: '2023-04-02T15:35:32.374815+00:00'
+timestamp: '2023-04-04T13:36:36.404693+00:00'

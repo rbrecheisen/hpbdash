@@ -8,6 +8,7 @@ from barbell2.castor.castor2sqlite import CastorToSqlite
 STUDY = 'ESPRESSO_v2.0_DPCA'
 CLIENT_ID = open(os.path.join(os.environ['HOME'], 'castorclientid.txt'), 'r').readline().strip()
 CLIENT_SECRET = open(os.path.join(os.environ['HOME'], 'castorclientsecret.txt'), 'r').readline().strip()
+OUTPUT_DB_FILE = '/tmp/castor.db'
 LOGGER = logging.getLogger(__name__)
 
 logging.basicConfig(level=logging.INFO)
@@ -19,8 +20,8 @@ def extract_data():
         STUDY, 
         CLIENT_ID, 
         CLIENT_SECRET, 
-        output_db_file=os.path.join(os.environ['HOME'], 'Desktop/castor.db'),
-        add_timestamp=True,
+        output_db_file=OUTPUT_DB_FILE,
+        add_timestamp=False,
     )
     extractor.execute()
 
