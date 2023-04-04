@@ -1,0 +1,7 @@
+{
+    "python.defaultInterpreterPath": "/Users/Ralph/.venv/mosamatic/bin/python",
+    "terminal.integrated.env.osx": {
+        "PYTHONPATH": "${workspaceFolder}/src"
+    },
+    "python.envFile": "${workspaceFolder}/.env"
+}
