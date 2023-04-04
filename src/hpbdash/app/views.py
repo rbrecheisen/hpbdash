@@ -33,7 +33,8 @@ def delete_query(request, query_id):
 
 @login_required
 def run_query(request, query_id):
+    # 'SELECT dpca_datok FROM data WHERE dpca_datok BETWEEN "2018-05-01" AND "2018-07-01";'
     query = QueryModel.objects.get(pk=query_id)
-    query_engine = CastorQuery('/Users/Ralph/Desktop/castor.db')
+    query_engine = CastorQuery('/tmp/castor.db')
     df = query_engine.execute(query.sql_statement)
     return render(request, 'query_result.html', context={'query': query, 'columns': df.columns, 'data': df.to_numpy()})

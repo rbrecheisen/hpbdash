@@ -9,8 +9,9 @@
                     <form action="/queries/create" method="post" enctype="multipart/form-data">
                         {% csrf_token %}
                         <input type="text" name="name" placeholder="Enter name" /><br>
-                        <textarea name="sql_statement" placeholder="Enter SQL statement" rows="5" cols="50"></textarea>
-                        <button type="submit" class="btn btn-primary">Add</button>
+                        <textarea style="margin-top: 10px;" name="sql_statement" placeholder="Enter SQL statement" rows="5" cols="50"></textarea><br>
+                        <!-- <p style="margin-top: 10px;">SELECT dpca_idcode FROM data WHERE dpca_datok BETWEEN "2018-05-01" AND "2018-07-01";</p> -->
+                        <button style="margin-top: 10px; width: 150px;" type="submit" class="btn btn-primary">Add</button>
                     </form>
                 </div>
             </div>
