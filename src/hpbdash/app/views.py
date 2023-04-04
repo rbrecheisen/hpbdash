@@ -3,6 +3,8 @@ from django.contrib.auth.decorators import login_required
 
 from .models import QueryModel
 
+from barbell2.castor.castor2sqlite import CastorQuery
+
 
 @login_required
 def get_queries(request):
@@ -30,4 +32,7 @@ def delete_query(request, query_id):
 @login_required
 def run_query(request, query_id):
     query = QueryModel.objects.get(pk=query_id)
+    query_engine = CastorQuery('/Users/Ralph/Desktop/castor.db')
+    query_engine.execute(query.sql_statement)
+    query_engine.to_csv('/Users/Ralph/Desktop/castor_query_results.csv')
     return render(request, 'query_result.html', context={'query_result': None})
