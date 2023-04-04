@@ -3,6 +3,7 @@
 import os
 import sys
 
+# sys.argv = ['src/hpbdash/manage.py', 'runserver']
 
 def main():
     """Run administrative tasks."""

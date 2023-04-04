@@ -21,10 +21,6 @@ def extract_data():
         CLIENT_SECRET, 
         output_db_file=os.path.join(os.environ['HOME'], 'Desktop/castor.db'),
         add_timestamp=True,
-        record_offset=0, 
-        max_nr_records=5,
-        rate_limiting=False,
-        nr_secs_before_recreate_session=120,
     )
     extractor.execute()
 
