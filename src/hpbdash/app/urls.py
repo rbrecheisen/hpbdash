@@ -7,4 +7,5 @@ urlpatterns = [
     path('queries/create', views.create_query),
     path('queries/<int:query_id>/delete', views.delete_query),
     path('queries/<int:query_id>/run', views.run_query),
+    path('queries/<int:query_id>/results', views.download_query_results),
 ]

@@ -1,6 +1,8 @@
+import os
 import json
 
 from django.shortcuts import render
+from django.views.static import serve
 from django.contrib.auth.decorators import login_required
 
 from .models import QueryModel
@@ -37,4 +39,13 @@ def run_query(request, query_id):
     query = QueryModel.objects.get(pk=query_id)
     query_engine = CastorQuery('/tmp/castor.db')
     df = query_engine.execute(query.sql_statement)
-    return render(request, 'query_result.html', context={'query': query, 'columns': df.columns, 'data': df.to_numpy()})
+    query_engine.to_csv('/tmp/castor_query_results.csv')
+    df_array = df.to_numpy()
+    return render(request, 'query_result.html', context={
+        'query': query, 'nr_rows': len(df_array), 'columns': df.columns, 'data': df_array})
+
+
+@login_required
+def download_query_results(request, query_id):
+    filepath = '/tmp/castor_query_results.csv'
+    return serve(request, os.path.basename(filepath), os.path.dirname(filepath))
