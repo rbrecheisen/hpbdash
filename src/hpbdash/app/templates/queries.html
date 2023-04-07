@@ -6,11 +6,17 @@
             <div class="card" style="margin-top: 10px;">
                 <div class="card-header"><b>Queries</b></div>
                 <div class="card-body">
+                    <form action="/upload" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <label for="files">Select data dictionary file:</label>
+                        <input type="file" id="file" name="file"/><br><br>
+                        <button type="submit" class="btn btn-primary">Upload</button>
+                    </form>
+                    <br>
                     <form action="/queries/create" method="post" enctype="multipart/form-data">
                         {% csrf_token %}
                         <input type="text" name="name" placeholder="Enter name" /><br>
                         <textarea style="margin-top: 10px;" name="sql_statement" placeholder="Enter SQL statement" rows="5" cols="50"></textarea><br>
-                        <!-- <p style="margin-top: 10px;">SELECT dpca_idcode FROM data WHERE dpca_datok BETWEEN "2018-05-01" AND "2018-07-01";</p> -->
                         <button style="margin-top: 10px; width: 150px;" type="submit" class="btn btn-primary">Add</button><br>
                         <br>
                         Examples:<br>
