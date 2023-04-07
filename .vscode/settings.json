@@ -1,5 +1,5 @@
 {
-    "python.defaultInterpreterPath": "/Users/Ralph/.venv/mosamatic/bin/python",
+    "python.defaultInterpreterPath": "/Users/Ralph/.venv/hpbdash/bin/python",
     "terminal.integrated.env.osx": {
         "PYTHONPATH": "${workspaceFolder}/src"
     },
