@@ -1,3 +1,5 @@
+import os
+
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -15,6 +17,12 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+# Castor DB file as created by Prefect castor2sqlite flow deployment
+CASTOR_DB_FILE = '/tmp/castor.db'
+
+# Castor query results folder
+CASTOR_QUERY_RESULT_DIR = '/tmp/castor'
+os.makedirs(CASTOR_QUERY_RESULT_DIR, exist_ok=True)
 
 # Application definition
 

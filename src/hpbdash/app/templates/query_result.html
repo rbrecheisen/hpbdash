@@ -7,12 +7,12 @@
             <div class="card" style="margin-top: 10px;">
                 <div class="card-header">
                     Query result for: <b>{{ query.name }}</b> ({{ nr_rows }} records)<br>
-                    <a href="/queries/{{ query.id }}/results">[download]</a>
+                    <a href="/queries/{{ query.id }}/results/{{ query_result.id }}/download">[download]</a>
                 </div>
                 <div class="card-body">
                     {{ query.sql_statement }}<br>
                     <br>
-                    <form action="/queries/{{ query.id }}/results/show" method="post" enctype="multipart/form-data">
+                    <form action="/queries/{{ query.id }}/results/{{ query_result.id }}/show" method="post" enctype="multipart/form-data">
                         {% csrf_token %}
                         <button style="margin-top: 10px; margin-bottom: 10px; width: 250px;" type="submit" class="btn btn-primary">Show selected</button><br>
                         <table class="data-table">

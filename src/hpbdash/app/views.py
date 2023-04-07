@@ -1,17 +1,14 @@
 import os
-import json
-import pandas as pd
 
 from django.shortcuts import render
 from django.views.static import serve
+from django.conf import settings
+from django.utils import timezone
 from django.contrib.auth.decorators import login_required
 
-from .models import QueryModel
+from .models import QueryModel, QueryResultModel
 
 from barbell2.castor.castor2sqlite import CastorQuery
-
-CASTOR_DB = '/tmp/castor.db'
-CASTOR_QUERY_RESULTS = '/tmp/castor_query_results.csv'
 
 
 @login_required
@@ -40,30 +37,46 @@ def delete_query(request, query_id):
 def run_query(request, query_id):
     # 'SELECT dpca_datok FROM data WHERE dpca_datok BETWEEN "2018-05-01" AND "2018-07-01";'
     errors = []
-    if not os.path.isfile(CASTOR_DB) or os.path.getsize(CASTOR_DB) == 0:
-        errors.append(f'Database file {CASTOR_DB} not found or empty. Did Prefect pipeline run?')
+    if not os.path.isfile(settings.CASTOR_DB_FILE) or os.path.getsize(settings.CASTOR_DB_FILE) == 0:
+        errors.append(f'Database file {settings.CASTOR_DB_FILE} not found or empty. Did Prefect pipeline run?')
     if len(errors) > 0:
         return render(request, 'errors.html', context={'errors': errors})    
-    query_engine = CastorQuery(CASTOR_DB)
+    query_engine = CastorQuery(settings.CASTOR_DB_FILE)
     query = QueryModel.objects.get(pk=query_id)
     df = query_engine.execute(query.sql_statement)
-    query_engine.to_csv(CASTOR_QUERY_RESULTS)
+    timestamp = timezone.now().strftime('%Y%m%d%H%M%S')
+    query_result_file = os.path.join(settings.CASTOR_QUERY_RESULT_DIR, f'query-{query_id}-result-{timestamp}.csv')
+    query_result = QueryResultModel.objects.create(
+        query=query,
+        result_file=query_result_file,
+    )
+    query_engine.to_csv(query_result.result_file)
     df_array = df.to_numpy()
-    return render(request, 'query_results.html', context={
-        'query': query, 'nr_rows': len(df_array), 'columns': df.columns, 'data': df_array})
+    return render(request, 'query_result.html', context={
+        'query': query, 'query_result': query_result, 'nr_rows': len(df_array), 'columns': df.columns, 'data': df_array})
     
     
 @login_required
-def show_query_results(request, query_id):
-    query = QueryModel.objects.get(pk=query_id)
-    df = pd.read_csv(CASTOR_QUERY_RESULTS)
+def get_query_result(request, query_id, query_result_id):
+    query_result = QueryResultModel.objects.get(pk=query_result_id)
+    df = query_result.as_df()
+    df_array = df.to_numpy()
+    return render(request, 'query_result.html', context={
+        'query': query_result.query, 'query_result': query_result, 'nr_rows': len(df_array), 'columns': df.columns, 'data': df_array})
+    
+    
+@login_required
+def show_query_result(request, query_id, query_result_id):
+    query_result = QueryResultModel.objects.get(pk=query_result_id)
+    df = query_result.as_df()
     for column in df.columns:
         if request.POST.get(f'{column}_cbx', None) is not None:
             print('Found selected column!')
-    return render(request, 'show_query_results.html', context={'query': query})
+    return render(request, 'show_query_result.html', context={})
 
 
 @login_required
-def download_query_results(request, query_id):
-    filepath = CASTOR_QUERY_RESULTS
+def download_query_result(request, query_id, query_result_id):
+    query_result = QueryResultModel.objects.get(pk=query_result_id)
+    filepath = query_result.result_file
     return serve(request, os.path.basename(filepath), os.path.dirname(filepath))
