@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container-fluid">
+    <div class="row"><p style="margin-top: 10px"><a href="/queries/">Back to queries</a></p></div>
+    <div class="row">
+        <div class="col-sm-10">
+            <div class="card" style="margin-top: 10px;">
+                <div class="card-header">
+                    Rendering query result for: <b>{{ query.name }}</b> ({{ nr_rows }} records)<br>
+                </div>
+                <div class="card-body">
+                    {{ query.sql_statement }}<br>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
