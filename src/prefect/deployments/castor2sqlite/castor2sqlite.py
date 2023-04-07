@@ -6,8 +6,14 @@ from barbell2.castor.castor2sqlite import CastorToSqlite
 
 
 STUDY = 'ESPRESSO_v2.0_DPCA'
-CLIENT_ID = open(os.path.join(os.environ['HOME'], 'castorclientid.txt'), 'r').readline().strip()
-CLIENT_SECRET = open(os.path.join(os.environ['HOME'], 'castorclientsecret.txt'), 'r').readline().strip()
+CLIENT_ID_FILE = os.path.join(os.environ['HOME'], 'castorclientid.txt')
+if not os.path.isfile(CLIENT_ID_FILE):
+    raise RuntimeError(f'Castor client ID file {CLIENT_ID_FILE} does not exist!')
+CLIENT_ID = open(CLIENT_ID_FILE, 'r').readline().strip()
+CLIENT_SECRET_FILE = os.path.join(os.environ['HOME'], 'castorclientsecret.txt')
+if not os.path.isfile(CLIENT_SECRET_FILE):
+    raise RuntimeError(f'Castor client secret file {CLIENT_SECRET_FILE} does not exist!')
+CLIENT_SECRET = open(CLIENT_SECRET_FILE, 'r').readline().strip()
 OUTPUT_DB_FILE = '/tmp/castor.db'
 LOGGER = logging.getLogger(__name__)
 
