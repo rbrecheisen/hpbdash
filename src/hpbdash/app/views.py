@@ -9,6 +9,8 @@ from .models import QueryModel
 
 from barbell2.castor.castor2sqlite import CastorQuery
 
+CASTOR_DB = '/tmp/castor.db'
+
 
 @login_required
 def get_queries(request):
@@ -36,8 +38,13 @@ def delete_query(request, query_id):
 @login_required
 def run_query(request, query_id):
     # 'SELECT dpca_datok FROM data WHERE dpca_datok BETWEEN "2018-05-01" AND "2018-07-01";'
+    errors = []
+    if not os.path.isfile(CASTOR_DB) or os.path.getsize(CASTOR_DB) == 0:
+        errors.append(f'Database file {CASTOR_DB} not found or empty. Did Prefect pipeline run?')
+    if len(errors) > 0:
+        return render(request, 'errors.html', context={'errors': errors})    
+    query_engine = CastorQuery(CASTOR_DB)
     query = QueryModel.objects.get(pk=query_id)
-    query_engine = CastorQuery('/tmp/castor.db')
     df = query_engine.execute(query.sql_statement)
     query_engine.to_csv('/tmp/castor_query_results.csv')
     df_array = df.to_numpy()

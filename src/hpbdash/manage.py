@@ -3,7 +3,14 @@
 import os
 import sys
 
-# sys.argv = ['src/hpbdash/manage.py', 'runserver']
+
+def debugger_active() -> bool:
+    return hasattr(sys, 'gettrace') and sys.gettrace() is not None
+
+
+if debugger_active():
+    sys.argv = ['src/hpbdash/manage.py', 'runserver']
+
 
 def main():
     """Run administrative tasks."""
