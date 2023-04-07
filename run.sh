@@ -1,16 +1,15 @@
 #!/bin/bash
 
-# activate virtualenv
-source ~/.venv/hpbdash/bin/activate
-
-# run server
 echo "running prefect server..."
 prefect server start &
 
-# run agent
 echo "running agent..."
 prefect agent start -p 'default-agent-pool' -q 'test' &
 
-# run webapp
 echo "running dashboard..."
-./init_app.sh &
+./run_app.sh
+
+echo "killing prefect processes..."
+for pid in $(ps -ef|grep "prefect"|awk '{print $2}'); do
+    kill -9 $pid 2>&1 /dev/null
+done
