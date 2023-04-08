@@ -4,12 +4,15 @@ import os
 import sys
 
 
-def debugger_active() -> bool:
+def is_debugging():
     return hasattr(sys, 'gettrace') and sys.gettrace() is not None
 
 
-if debugger_active():
-    sys.argv = ['src/hpbdash/manage.py', 'runserver']
+if is_debugging():
+    # sys.argv = ['k4k/manage.py', 'load_lessons']
+    # sys.argv = ['k4k/manage.py', 'makemigrations']
+    # sys.argv = ['k4k/manage.py', 'migrate']
+    sys.argv = ['k4k/manage.py', 'runserver']
 
 
 def main():
