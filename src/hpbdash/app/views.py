@@ -104,7 +104,7 @@ def delete_query(request, query_id):
 """-------------------------------------------------------------------------------------------------------------------
 """
 @login_required
-def run_query(request, query_id):
+def execute_query(request, query_id):
     # check if SQL database is present. if not, return error page
     errors = []
     if not os.path.isfile(settings.CASTOR_DB_FILE) or os.path.getsize(settings.CASTOR_DB_FILE) == 0:
@@ -133,38 +133,10 @@ def get_query_result(request, query_id, query_result_id):
     query_result = QueryResultModel.objects.get(pk=query_result_id)
     # note: conversion to dataframe results integers in being converted to floats
     df = query_result.as_df()
-    df_array = df.to_numpy()
     return render(request, 'query_result.html', context={
-        'query': query_result.query, 'query_result': query_result, 'nr_rows': len(df_array), 'columns': df.columns, 'data': df_array})
+        'query': query_result.query, 'query_result': query_result, 'nr_rows': len(df.index), 'columns': df.columns, 'data': df.to_numpy()})
     
     
-"""-------------------------------------------------------------------------------------------------------------------
-"""
-@login_required
-def show_query_result(request, query_id, query_result_id):
-    # load data dictionary
-    with open(settings.CASTOR_DD_FILE, 'r') as f:
-        dd = json.load(f)
-    # get query results as dataframe
-    query_result = QueryResultModel.objects.get(pk=query_result_id)
-    df = query_result.as_df()
-    for column in df.columns:
-        if request.POST.get(f'{column}_cbx', None) is not None:
-            groups = df.groupby([column]).groups
-            data = {}
-            for group in groups.keys():
-                data[group] = len(groups[group])
-            new_df = pd.DataFrame(data=data, index=[0])
-            ax = new_df.plot(kind='bar', stacked=True)
-            pos = ax.get_position()
-            ax.set_position([pos.x0, pos.y0, pos.width * 0.80, pos.height])
-            ax.legend(loc='center left', bbox_to_anchor=(1, 0.5))
-            plt.xticks(rotation=90)
-            plt.savefig('/Users/Ralph/Desktop/dpca_typok.png')
-            # plt.close()
-    return render(request, 'show_query_result.html', context={})
-
-
 """-------------------------------------------------------------------------------------------------------------------
 """
 @login_required
