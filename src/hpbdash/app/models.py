@@ -25,8 +25,8 @@ class QueryResultModel(models.Model):
         # read castor_dd.json. all values are read as strings
         with open(settings.CASTOR_DD_FILE, 'r') as f:
             dd = json.load(f)        
-        df = pd.read_csv(self.result_file, dtype=str)
-        df = df.fillna('-')
+        df = pd.read_csv(self.result_file, sep=';', dtype=str)
+        df = df.fillna('unknown')
         return df
     
     def __str__(self):

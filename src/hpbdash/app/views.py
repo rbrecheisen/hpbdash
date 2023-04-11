@@ -114,7 +114,7 @@ def run_query(request, query_id):
     # run query and store results in csv file
     query_engine = CastorQuery(settings.CASTOR_DB_FILE)
     query = QueryModel.objects.get(pk=query_id)
-    df = query_engine.execute(query.sql_statement)
+    query_engine.execute(query.sql_statement)
     timestamp = timezone.now().strftime('%Y%m%d%H%M%S')
     query_result_file = os.path.join(settings.CASTOR_QUERY_RESULT_DIR, f'query-{query_id}-result-{timestamp}.csv')
     query_result = QueryResultModel.objects.create(
