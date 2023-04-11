@@ -17,11 +17,10 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-# Castor DB file as created by Prefect castor2sqlite flow deployment
-CASTOR_DB_FILE = '/tmp/castor.db'
+CASTOR_DB_FILE = '/tmp/castor/castor.db'
+CASTOR_DD_FILE = '/tmp/castor/castor_dd.json'
+CASTOR_QUERY_RESULT_DIR = '/tmp/castor/query_results'
 
-# Castor query results folder
-CASTOR_QUERY_RESULT_DIR = '/tmp/castor'
 os.makedirs(CASTOR_QUERY_RESULT_DIR, exist_ok=True)
 
 # Application definition

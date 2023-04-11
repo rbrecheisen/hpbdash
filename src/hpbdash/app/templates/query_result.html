@@ -7,6 +7,7 @@
             <div class="card" style="margin-top: 10px;">
                 <div class="card-header">
                     Query result for: <b>{{ query.name }}</b> ({{ nr_rows }} records)<br>
+                    <i>{{ query_result.result_file }}</i>: 
                     <a href="/queries/{{ query.id }}/results/{{ query_result.id }}/download">[download]</a>
                 </div>
                 <div class="card-body">

@@ -1,5 +1,9 @@
 import os
+import json
+import pandas as pd
+
 from django.db import models
+from django.conf import settings
 from django.dispatch import receiver
 
 
@@ -18,8 +22,12 @@ class QueryResultModel(models.Model):
     result_file = models.CharField(max_length=1024)
     
     def as_df(self):
-        import pandas as pd
-        return pd.read_csv(self.result_file)
+        # read castor_dd.json. all values are read as strings
+        with open(settings.CASTOR_DD_FILE, 'r') as f:
+            dd = json.load(f)        
+        df = pd.read_csv(self.result_file, dtype=str)
+        df = df.fillna('-')
+        return df
     
     def __str__(self):
         return f'QueryResult(Query("{self.query.name}"))'
