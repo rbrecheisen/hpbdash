@@ -29,7 +29,7 @@ infrastructure:
 flow_name: castor2sqlite
 manifest_path: null
 storage: null
-path: /Users/ralph/dev/hpbdash/src/prefect/deployments/castor2sqlite
+path: /Users/Ralph/dev/hpbdash/src/prefect/deployments/castor2sqlite
 entrypoint: castor2sqlite.py:castor2sqlite
 parameter_openapi_schema:
   title: Parameters
@@ -37,4 +37,4 @@ parameter_openapi_schema:
   properties: {}
   required: null
   definitions: null
-timestamp: '2023-04-07T10:03:42.734664+00:00'
+timestamp: '2023-04-11T08:26:27.658665+00:00'

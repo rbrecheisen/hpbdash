@@ -35,7 +35,11 @@ def upload_data_dictionary(request):
 @login_required
 def get_queries(request):
     queries = QueryModel.objects.all()
-    return render(request, 'queries.html', context={'queries': queries})
+    if not os.path.isfile(settings.CASTOR_DB_FILE):
+        message = 'database: not found'
+    else:
+        message = f'database: {settings.CASTOR_DB_FILE}'
+    return render(request, 'queries.html', context={'queries': queries, 'message': message})
 
 
 @login_required
