@@ -19,9 +19,6 @@ from barbell2.castor.castor2sqlite import CastorQuery
 
 
 """ -------------------------------------------------------------------------------------------------------------------
-Processes upload of a Castor export file and extracts a dictionary of all option variables and their values
-See scripts-ralph code for an example of building COLUMN_META_DATA. Just go through list of study variables and
-take those that are option groups. Then lookup the option values in the next sheet.
 """
 @login_required
 def upload_data_dictionary(request):
