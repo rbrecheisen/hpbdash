@@ -14,7 +14,7 @@ CLIENT_SECRET_FILE = os.path.join(os.environ['HOME'], 'castorclientsecret.txt')
 if not os.path.isfile(CLIENT_SECRET_FILE):
     raise RuntimeError(f'Castor client secret file {CLIENT_SECRET_FILE} does not exist!')
 CLIENT_SECRET = open(CLIENT_SECRET_FILE, 'r').readline().strip()
-OUTPUT_DB_FILE = '/tmp/castor.db'
+OUTPUT_DB_FILE = '/tmp/castor/castor.db'
 LOGGER = logging.getLogger(__name__)
 
 logging.basicConfig(level=logging.INFO)

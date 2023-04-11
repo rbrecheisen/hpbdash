@@ -3,7 +3,7 @@
 ###
 name: castor2sqlite
 description: null
-version: eee8bb3a1e4128cb3878cc5fd8af4c12
+version: 3c72142ca154dc11662bff4f89b21c91
 # The work queue that will handle this deployment's runs
 work_queue_name: test
 work_pool_name: null
@@ -37,4 +37,4 @@ parameter_openapi_schema:
   properties: {}
   required: null
   definitions: null
-timestamp: '2023-04-11T08:26:27.658665+00:00'
+timestamp: '2023-04-11T12:54:34.882641+00:00'
