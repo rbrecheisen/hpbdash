@@ -2,7 +2,7 @@ import os
 import logging
 
 from prefect import flow, task
-from barbell2.castor.castor2sqlite import CastorToSqlite
+from barbell2_castor import CastorToSqlite3
 
 
 STUDY = 'ESPRESSO_v2.0_DPCA'
@@ -22,7 +22,7 @@ logging.basicConfig(level=logging.INFO)
 
 @task(name='extract_data')
 def extract_data():
-    extractor = CastorToSqlite(
+    extractor = CastorToSqlite3(
         STUDY, 
         CLIENT_ID, 
         CLIENT_SECRET, 

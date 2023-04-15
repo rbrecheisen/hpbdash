@@ -15,7 +15,7 @@ from django.core.files.uploadedfile import InMemoryUploadedFile, TemporaryUpload
 
 from .models import QueryModel, QueryResultModel
 
-from barbell2.castor.castor2sqlite import CastorQuery
+from barbell2_castor import CastorQuery
 
 
 """ -------------------------------------------------------------------------------------------------------------------
