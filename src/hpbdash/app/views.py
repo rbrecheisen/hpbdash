@@ -67,6 +67,29 @@ def upload_data_dictionary(request):
 """-------------------------------------------------------------------------------------------------------------------
 """
 @login_required
+def get_fields(request):
+    # Load data dictionary settings.CASTOR_DD_FILE
+    with open(settings.CASTOR_DD_FILE, 'r') as f:
+        data = json.load(f)
+    for field_name in data.keys():
+        field = data[field_name]
+        
+    # Convert to table
+    return render(request, 'fields.html', context={'columns': columns, 'data': data})
+
+
+"""-------------------------------------------------------------------------------------------------------------------
+"""
+@login_required
+def get_option_groups(request):
+    # Load data dictionary settings.CASTOR_DD_FILE
+    # Convert to table
+    return render(request, 'option_groups.html', context={})
+
+
+"""-------------------------------------------------------------------------------------------------------------------
+"""
+@login_required
 def get_queries(request):
     queries = QueryModel.objects.all()
     if not os.path.isfile(settings.CASTOR_DB_FILE):
@@ -129,6 +152,7 @@ def execute_query(request, query_id):
 def get_query_result(request, query_id, query_result_id):
     query_result = QueryResultModel.objects.get(pk=query_result_id)
     # note: conversion to dataframe results integers in being converted to floats
+    # use data dictionary to perform conversion
     df = query_result.as_df()
     return render(request, 'query_result.html', context={
         'query': query_result.query, 'query_result': query_result, 'nr_rows': len(df.index), 'columns': df.columns, 'data': df.to_numpy()})

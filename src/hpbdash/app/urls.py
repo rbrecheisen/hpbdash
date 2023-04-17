@@ -10,4 +10,6 @@ urlpatterns = [
     path('queries/<int:query_id>/results/<int:query_result_id>/', views.get_query_result),
     path('queries/<int:query_id>/results/<int:query_result_id>/download', views.download_query_result),
     path('upload', views.upload_data_dictionary),
+    path('dd/fields/', views.get_fields),
+    path('dd/option_groups/', views.get_option_groups),
 ]
