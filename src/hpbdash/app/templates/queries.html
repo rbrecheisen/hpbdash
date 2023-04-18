@@ -8,6 +8,7 @@
                     <b>Queries</b><br><i>{{ message }}</i>
                 </div>
                 <div class="card-body">
+                    [<a href="/dd/fields/" target="_blank">fields</a>] [<a href="/dd/option_groups/" target="_blank">option groups</a>]<br>
                     <form action="/upload" method="post" enctype="multipart/form-data">
                         {% csrf_token %}
                         <label for="files">Select data dictionary file:</label>
