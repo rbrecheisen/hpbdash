@@ -2,7 +2,7 @@ import os
 import logging
 
 from prefect import flow, task
-from barbell2.castor.castor2sqlite import CastorToSqlite
+from barbell2_castor import CastorToSqlite
 
 
 STUDY = 'ESPRESSO_v2.0_DPCA'
