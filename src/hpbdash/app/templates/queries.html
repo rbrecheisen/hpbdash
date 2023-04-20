@@ -36,27 +36,34 @@
             <div class="card" style="margin-top: 10px;">
                 <div class="card-header">Available queries</div>
                 <div class="card-body">
-                    <table class="table">
-                        <tr>
-                            <th>Name</th>
-                            <th>SQL statement</th>
-                            <th>Commands</th>
-                        </tr>
-                        {% for query in queries %}
+                    <form action="/reports/create" method="post", enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <input type="text" name="report_name" placeholder="Enter report name" /><br>                        
+                        <button type="submit" class="btn btn-primary">Create report from selected queries</button>
+                        <table class="table">
                             <tr>
-                                <td>{{ query.name }}</td>
-                                <td>{{ query.sql_statement }}</td>
-                                {%  if user.is_staff %}
-                                    <td>
-                                        [<a href="/queries/{{ query.id }}/delete">delete</a>]
-                                        [<a href="/queries/{{ query.id }}/run">run</a>]
-                                    </td>
-                                {% else %}
-                                    <td></td>
-                                {%  endif %}
+                                <th></th>
+                                <th>Name</th>
+                                <th>SQL statement</th>
+                                <th>Commands</th>
                             </tr>
-                        {% endfor %}
-                    </table>
+                            {% for query in queries %}
+                                <tr>
+                                    <td><input type="checkbox" name="{{ query.id }}_cbx"></td>
+                                    <td>{{ query.name }}</td>
+                                    <td>{{ query.sql_statement }}</td>
+                                    {%  if user.is_staff %}
+                                        <td>
+                                            [<a href="/queries/{{ query.id }}/delete">delete</a>]
+                                            [<a href="/queries/{{ query.id }}/run">run</a>]
+                                        </td>
+                                    {% else %}
+                                        <td></td>
+                                    {%  endif %}
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    </form>
                 </div>
             </div>
         </div>

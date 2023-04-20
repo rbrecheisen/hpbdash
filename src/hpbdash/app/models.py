@@ -38,13 +38,18 @@ def query_result_post_delete(sender, instance, **kwargs):
         os.remove(instance.result_file)
 
 
-# class ReportModel(models.Model):    
-#     name = models.CharField(max_length=1024)
-#     def __str__(self):
-#         return self.name
+class ReportModel(models.Model):    
+
+    name = models.CharField(max_length=1024)
+
+    def __str__(self):
+        return self.name
     
-# class ReportItemModel(models.Model):
-#     report = models.ForeignKey('ReportModel', on_delete=models.CASCADE)
-#     query_result = models.ForeignKey('QueryResultModel', on_delete=models.DO_NOTHING)
-#     def __str__(self):
-#         return f'ReportItem(QueryResult("{self.query_result.query.name}"))'
+
+class ReportItemModel(models.Model):
+
+    report = models.ForeignKey('ReportModel', on_delete=models.CASCADE)
+    query = models.ForeignKey('QueryModel', on_delete=models.DO_NOTHING)
+
+    def __str__(self):
+        return f'ReportItem(Query("{self.query.name}"))'

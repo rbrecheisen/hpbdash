@@ -12,4 +12,5 @@ urlpatterns = [
     path('upload', views.upload_data_dictionary),
     path('dd/fields/', views.get_fields),
     path('dd/option_groups/', views.get_option_groups),
+    path('create_report', views.create_report),
 ]

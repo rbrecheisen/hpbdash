@@ -13,7 +13,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.files.base import ContentFile
 from django.core.files.uploadedfile import InMemoryUploadedFile, TemporaryUploadedFile
 
-from .models import QueryModel, QueryResultModel
+from .models import QueryModel, QueryResultModel, ReportItemModel, ReportModel
 
 from barbell2_castor import CastorQuery
 
@@ -72,8 +72,7 @@ def get_fields(request):
     with open(settings.CASTOR_DD_FILE, 'r') as f:
         data = json.load(f)
     for field_name in data.keys():
-        field = data[field_name]
-        
+        field = data[field_name]        
     # Convert to table
     return render(request, 'fields.html', context={'columns': columns, 'data': data})
 
@@ -165,3 +164,19 @@ def download_query_result(request, query_id, query_result_id):
     query_result = QueryResultModel.objects.get(pk=query_result_id)
     filepath = query_result.result_file
     return serve(request, os.path.basename(filepath), os.path.dirname(filepath))
+
+
+"""-------------------------------------------------------------------------------------------------------------------
+"""
+def get_reports(request):
+    reports = ReportModel.objects.all()
+    return render(request, 'reports.html', context={'reports': reports})
+
+
+"""-------------------------------------------------------------------------------------------------------------------
+"""
+def create_report(request):
+    report_name = request.POST.get('report_name', None)
+    report = ReportModel.objects.create(report_name)
+    # how do I get the queries checked for this report from the queries.html
+    return redirect('/queries/')
