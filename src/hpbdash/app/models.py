@@ -9,11 +9,7 @@ from django.dispatch import receiver
 
 class QueryModel(models.Model):
 
-    name = models.CharField(max_length=1024)
     sql_statement = models.CharField(max_length=2048)
-
-    def __str__(self):
-        return self.name
     
     
 class QueryResultModel(models.Model):

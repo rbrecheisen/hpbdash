@@ -106,8 +106,7 @@ def get_queries(request):
 """
 @login_required
 def create_query(request):
-    QueryModel.objects.create(
-        name=request.POST.get('name'), sql_statement=request.POST.get('sql_statement'))
+    QueryModel.objects.create(sql_statement=request.POST.get('sql_statement'))
     return redirect('/queries/')
 
 
@@ -125,10 +124,8 @@ def delete_query(request, query_id):
 @login_required
 def execute_query(request, query_id):
     # check if SQL database is present. if not, return error page
-    errors = []
     if not os.path.isfile(settings.CASTOR_DB_FILE) or os.path.getsize(settings.CASTOR_DB_FILE) == 0:
-        errors.append(f'Database file {settings.CASTOR_DB_FILE} not found or empty. Did Prefect pipeline run?')
-    if len(errors) > 0:
+        errors = [f'Database file {settings.CASTOR_DB_FILE} not found or empty. Did Prefect pipeline run?']
         return render(request, 'errors.html', context={'errors': errors})    
     # run query and store results in csv file
     query_engine = CastorQuery(settings.CASTOR_DB_FILE)
@@ -148,20 +145,20 @@ def execute_query(request, query_id):
 """-------------------------------------------------------------------------------------------------------------------
 """
 @login_required
-def get_query_result(request, query_id, query_result_id):
-    query_result = QueryResultModel.objects.get(pk=query_result_id)
+def get_result(request, query_id, result_id):
+    query_result = QueryResultModel.objects.get(pk=result_id)
     # note: conversion to dataframe results integers in being converted to floats
     # use data dictionary to perform conversion
     df = query_result.as_df()
-    return render(request, 'query_result.html', context={
+    return render(request, 'result.html', context={
         'query': query_result.query, 'query_result': query_result, 'nr_rows': len(df.index), 'columns': df.columns, 'data': df.to_numpy()})
     
     
 """-------------------------------------------------------------------------------------------------------------------
 """
 @login_required
-def download_query_result(request, query_id, query_result_id):
-    query_result = QueryResultModel.objects.get(pk=query_result_id)
+def download_result(request, query_id, result_id):
+    query_result = QueryResultModel.objects.get(pk=result_id)
     filepath = query_result.result_file
     return serve(request, os.path.basename(filepath), os.path.dirname(filepath))
 

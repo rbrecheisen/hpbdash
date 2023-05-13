@@ -8,17 +8,17 @@
                     <b>Queries</b><br><i>{{ message }}</i>
                 </div>
                 <div class="card-body">
-                    [<a href="/dd/fields/" target="_blank">fields</a>] [<a href="/dd/option_groups/" target="_blank">option groups</a>]<br>
-                    <form action="/upload" method="post" enctype="multipart/form-data">
+                    <!-- [<a href="/dd/fields/" target="_blank">fields</a>] [<a href="/dd/option_groups/" target="_blank">option groups</a>]<br> -->
+                    <!-- <form action="/upload" method="post" enctype="multipart/form-data">
                         {% csrf_token %}
                         <label for="files">Select data dictionary file:</label>
                         <input type="file" id="file" name="file"/><br><br>
                         <button type="submit" class="btn btn-primary">Upload</button>
                     </form>
-                    <br>
+                    <br> -->
                     <form action="/queries/create" method="post" enctype="multipart/form-data">
                         {% csrf_token %}
-                        <input type="text" name="name" placeholder="Enter name" /><br>
+                        <!-- <input type="text" name="name" placeholder="Enter name" /><br> -->
                         <textarea style="margin-top: 10px;" name="sql_statement" placeholder="Enter SQL statement" rows="5" cols="50"></textarea><br>
                         <button style="margin-top: 10px; width: 150px;" type="submit" class="btn btn-primary">Add</button><br>
                         <br>
@@ -43,14 +43,14 @@
                         <table style="margin-top: 10px;" class="table">
                             <tr>
                                 <th></th>
-                                <th>Name</th>
+                                <!-- <th>Name</th> -->
                                 <th>SQL statement</th>
                                 <th>Commands</th>
                             </tr>
                             {% for query in queries %}
                                 <tr>
                                     <td><input type="checkbox" name="{{ query.id }}_cbx"></td>
-                                    <td>{{ query.name }}</td>
+                                    <!-- <td>{{ query.name }}</td> -->
                                     <td>{{ query.sql_statement }}</td>
                                     {%  if user.is_staff %}
                                         <td>
