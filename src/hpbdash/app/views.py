@@ -25,6 +25,7 @@ def get_queries(request):
 @login_required
 def create_query(request):
     QueryModel.objects.create(
+        name=request.POST.get('name'),
         database=request.POST.get('database'),
         sql_statement=request.POST.get('sql_statement')
         )
@@ -106,7 +107,51 @@ def get_reports(request):
 """-------------------------------------------------------------------------------------------------------------------
 """
 def create_report(request):
-    report_name = request.POST.get('report_name', None)
-    report = ReportModel.objects.create(report_name)
-    # how do I get the queries checked for this report from the queries.html
-    return redirect('/queries/')
+    # get all queries and check which one was selectec
+    queries = QueryModel.objects.all()
+    selected_queries = []
+    for query in queries:
+        query_checkbox_id = f'{query.id}_cbx'
+        if request.POST.get(query_checkbox_id, None) is not None:
+            selected_queries.append(query)
+    # update query SQL to include the start and end dates for this new report
+    start_date = request.POST.get('start_date')
+    end_date = request.POST.get('end_date')
+    for query in selected_queries:
+        if 'WHERE' in query.sql_statement:
+            items = query.sql_statement.split('WHERE')
+            select = items[0]
+            where_clause = items[1]
+            where_clause += f'WHERE {settings.CASTOR_DATOK_NAMES[query.database]} BETWEEN "{start_date}" AND "{end_date}" {where_clause}'
+            query.sql_statement = select + where_clause
+            if not query.sql_statement.endswith(';'):
+                query.sql_statement += ';'
+        else:
+            if query.sql_statement.endswith(';'):
+                query.sql_statement = query.sql_statement[:-1]
+            query.sql_statement += f' WHERE {settings.CASTOR_DATOK_NAMES[query.database]} BETWEEN "{start_date}" AND "{end_date}";'
+        print(f'updated query (not saved): {query.sql_statement}')
+    # run queries where each query results in a dataframe
+    for query in selected_queries:
+        query_runner = CastorQueryRunner(settings.CASTOR_DB_FILES[query.database])
+        df = query_runner.execute(query.sql_statement)
+        print(df)
+    # create report instance
+    # timestamp = timezone.now().strftime('%Y%m%d%H%M%S')
+    # report = ReportModel.objects.create(name=f'report-{timestamp}', start_date=start_date, end_date=end_date)    
+    return redirect('/reports/')
+
+
+"""-------------------------------------------------------------------------------------------------------------------
+"""
+def delete_report(request, report_id):
+    report = ReportModel.objects.get(pk=report_id)
+    report.delete()
+    return redirect('/reports/')
+
+
+"""-------------------------------------------------------------------------------------------------------------------
+"""
+def generate_report_content(request, report_id):
+    report = ReportModel.objects.get(pk=report_id)
+    return render(request, 'report.html', context={'report': report})

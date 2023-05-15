@@ -9,6 +9,7 @@ from django.dispatch import receiver
 
 class QueryModel(models.Model):
 
+    name = models.CharField(max_length=1024)
     database = models.CharField(max_length=256)
     sql_statement = models.CharField(max_length=2048)
     
@@ -36,16 +37,9 @@ def query_result_post_delete(sender, instance, **kwargs):
 
 class ReportModel(models.Model):    
 
-    name = models.CharField(max_length=1024)
+    name = models.CharField(max_length=1024, unique=True)
+    start_date = models.CharField(max_length=10)
+    end_date = models.CharField(max_length=10)
 
     def __str__(self):
-        return self.name
-    
-
-class ReportItemModel(models.Model):
-
-    report = models.ForeignKey('ReportModel', on_delete=models.CASCADE)
-    query = models.ForeignKey('QueryModel', on_delete=models.DO_NOTHING)
-
-    def __str__(self):
-        return f'ReportItem(Query("{self.query.name}"))'
+        return f'{self.name} [{self.start_date} - {self.end_date}]'

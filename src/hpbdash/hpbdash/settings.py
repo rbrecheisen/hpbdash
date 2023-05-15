@@ -18,8 +18,13 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 CASTOR_DB_FILES = {
-    'pancreas': '/tmp/castor/pancreas.db',
-    'liver': '/tmp/castor/liver.db',
+    'dpca': '/tmp/castor/dpca.db',
+    'dhba': '/tmp/castor/dhba.db',
+}
+
+CASTOR_DATOK_NAMES = {
+    'dpca': 'dpca_datok',
+    'dhba': 'dhba_datok1',
 }
 
 CASTOR_DD_FILE = '/tmp/castor/castor_dd.json'

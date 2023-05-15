@@ -10,5 +10,8 @@ urlpatterns = [
     path('results/<int:result_id>/', views.get_result),
     path('results/<int:result_id>/download', views.download_result),
     path('results/<int:result_id>/delete', views.delete_result),
-    path('create_report', views.create_report),
+    path('reports/', views.get_reports),
+    path('reports/create', views.create_report),
+    path('reports/<int:report_id>/generate_content', views.generate_report_content),
+    path('reports/<int:report_id>/delete', views.delete_report),
 ]
