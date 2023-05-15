@@ -19,8 +19,6 @@ class QueryResultModel(models.Model):
     result_file = models.CharField(max_length=1024)
     
     def as_df(self):
-        # with open(settings.CASTOR_DD_FILE, 'r') as f:
-        #     dd = json.load(f)        
         df = pd.read_csv(self.result_file, sep=';', dtype=str)
         df = df.fillna('unknown')
         return df
@@ -31,6 +29,7 @@ class QueryResultModel(models.Model):
 
 @receiver(models.signals.post_delete, sender=QueryResultModel)
 def query_result_post_delete(sender, instance, **kwargs):
+    # also called when query itself is deleted because result is linked to it
     if os.path.isfile(instance.result_file):
         os.remove(instance.result_file)
 

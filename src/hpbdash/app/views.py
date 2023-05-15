@@ -9,7 +9,7 @@ from django.contrib.auth.decorators import login_required
 
 from .models import QueryModel, QueryResultModel, ReportModel
 
-from barbell2_castor import CastorQuery
+from barbell2_castor import CastorQueryRunner
 
 
 """-------------------------------------------------------------------------------------------------------------------
@@ -53,7 +53,7 @@ def execute_query(request, query_id):
             f'Database file {db_file} not found or empty. Did Prefect pipeline run?'
         ]})    
     # run query and store results in csv file
-    query_runner = CastorQuery(db_file)
+    query_runner = CastorQueryRunner(db_file)
     query_runner.execute(query.sql_statement)
     timestamp = timezone.now().strftime('%Y%m%d%H%M%S')
     query_result_file = os.path.join(settings.CASTOR_QUERY_RESULT_DIR, f'query-{query_id}-result-{timestamp}.csv')
