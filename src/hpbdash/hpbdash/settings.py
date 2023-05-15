@@ -17,7 +17,11 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-CASTOR_DB_FILE = '/tmp/castor/castor.db'
+CASTOR_DB_FILES = {
+    'pancreas': '/tmp/castor/pancreas.db',
+    'liver': '/tmp/castor/liver.db',
+}
+
 CASTOR_DD_FILE = '/tmp/castor/castor_dd.json'
 CASTOR_QUERY_RESULT_DIR = '/tmp/castor/query_results'
 

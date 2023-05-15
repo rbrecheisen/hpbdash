@@ -5,27 +5,24 @@
         <div class="col-sm-10">
             <div class="card" style="margin-top: 10px;">
                 <div class="card-header">
-                    <b>Queries</b><br><i>{{ message }}</i>
+                    <b>Queries</b>
                 </div>
                 <div class="card-body">
-                    <!-- [<a href="/dd/fields/" target="_blank">fields</a>] [<a href="/dd/option_groups/" target="_blank">option groups</a>]<br> -->
-                    <!-- <form action="/upload" method="post" enctype="multipart/form-data">
-                        {% csrf_token %}
-                        <label for="files">Select data dictionary file:</label>
-                        <input type="file" id="file" name="file"/><br><br>
-                        <button type="submit" class="btn btn-primary">Upload</button>
-                    </form>
-                    <br> -->
                     <form action="/queries/create" method="post" enctype="multipart/form-data">
                         {% csrf_token %}
-                        <!-- <input type="text" name="name" placeholder="Enter name" /><br> -->
+                        <select class="form-select" name="database">
+                            <option selected>Please select database for your query</option>
+                            <option value="pancreas">pancreas</option>
+                            <option value="liver">liver</option>
+                        </select>
                         <textarea style="margin-top: 10px;" name="sql_statement" placeholder="Enter SQL statement" rows="5" cols="50"></textarea><br>
                         <button style="margin-top: 10px; width: 150px;" type="submit" class="btn btn-primary">Add</button><br>
                         <br>
                         Examples:<br>
                         <br>
                         - SELECT dpca_idcode FROM data WHERE dpca_datok BETWEEN "2018-05-01" AND "2018-07-01";<br>
-                        - SELECT dpca_gebjaar, dpca_typok FROM data WHERE dpca_lokalisatie = 4 OR dpca_lokalisatie = 5;
+                        - SELECT dpca_gebjaar, dpca_typok FROM data WHERE dpca_lokalisatie = 4 OR dpca_lokalisatie = 5;<br>
+                        - SELECT dhba_idcode FROM data WHERE dhba_datok BETWEEN "2018-05-01" AND "2018-07-01";<br>
                     </form>
                 </div>
             </div>
@@ -43,14 +40,14 @@
                         <table style="margin-top: 10px;" class="table">
                             <tr>
                                 <th></th>
-                                <!-- <th>Name</th> -->
+                                <th>Database</th>
                                 <th>SQL statement</th>
                                 <th>Commands</th>
                             </tr>
                             {% for query in queries %}
                                 <tr>
                                     <td><input type="checkbox" name="{{ query.id }}_cbx"></td>
-                                    <!-- <td>{{ query.name }}</td> -->
+                                    <td>{{ query.database }}</td>
                                     <td>{{ query.sql_statement }}</td>
                                     {%  if user.is_staff %}
                                         <td>
