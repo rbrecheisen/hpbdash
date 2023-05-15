@@ -7,7 +7,8 @@ from django.utils import timezone
 from django.core.files.storage import default_storage
 from django.contrib.auth.decorators import login_required
 
-from .models import QueryModel, QueryResultModel, ReportModel
+from .models import QueryModel, QueryResultModel, ReportModel, ReportItemModel
+from .reports.report1 import ReportRenderer
 
 from barbell2_castor import CastorQueryRunner
 
@@ -107,38 +108,34 @@ def get_reports(request):
 """-------------------------------------------------------------------------------------------------------------------
 """
 def create_report(request):
-    # get all queries and check which one was selectec
+    # create report object
+    end_date = request.POST.get('end_date')
+    start_date = request.POST.get('start_date')
+    timestamp = timezone.now().strftime('%Y%m%d%H%M%S')
+    report = ReportModel.objects.create(name=f'report-{timestamp}', start_date=start_date, end_date=end_date)    
+    # select queries
     queries = QueryModel.objects.all()
     selected_queries = []
     for query in queries:
         query_checkbox_id = f'{query.id}_cbx'
         if request.POST.get(query_checkbox_id, None) is not None:
             selected_queries.append(query)
-    # update query SQL to include the start and end dates for this new report
-    start_date = request.POST.get('start_date')
-    end_date = request.POST.get('end_date')
+    # update selected queries with BETWEEN dates info
     for query in selected_queries:
-        if 'WHERE' in query.sql_statement:
+        sql_statement = query.sql_statement
+        if 'WHERE' in sql_statement:
             items = query.sql_statement.split('WHERE')
             select = items[0]
             where_clause = items[1]
             where_clause += f'WHERE {settings.CASTOR_DATOK_NAMES[query.database]} BETWEEN "{start_date}" AND "{end_date}" {where_clause}'
-            query.sql_statement = select + where_clause
-            if not query.sql_statement.endswith(';'):
-                query.sql_statement += ';'
+            sql_statement = select + where_clause
+            if not sql_statement.endswith(';'):
+                sql_statement += ';'
         else:
-            if query.sql_statement.endswith(';'):
-                query.sql_statement = query.sql_statement[:-1]
-            query.sql_statement += f' WHERE {settings.CASTOR_DATOK_NAMES[query.database]} BETWEEN "{start_date}" AND "{end_date}";'
-        print(f'updated query (not saved): {query.sql_statement}')
-    # run queries where each query results in a dataframe
-    for query in selected_queries:
-        query_runner = CastorQueryRunner(settings.CASTOR_DB_FILES[query.database])
-        df = query_runner.execute(query.sql_statement)
-        print(df)
-    # create report instance
-    # timestamp = timezone.now().strftime('%Y%m%d%H%M%S')
-    # report = ReportModel.objects.create(name=f'report-{timestamp}', start_date=start_date, end_date=end_date)    
+            if sql_statement.endswith(';'):
+                sql_statement = sql_statement[:-1]
+            sql_statement += f' WHERE {settings.CASTOR_DATOK_NAMES[query.database]} BETWEEN "{start_date}" AND "{end_date}";'
+        ReportItemModel.objects.create(report=report, sql_statement=sql_statement)
     return redirect('/reports/')
 
 
@@ -152,6 +149,8 @@ def delete_report(request, report_id):
 
 """-------------------------------------------------------------------------------------------------------------------
 """
-def generate_report_content(request, report_id):
+def render_report(request, report_id):
     report = ReportModel.objects.get(pk=report_id)
+    report_renderer = ReportRenderer(report)
+    report_renderer.execute()
     return render(request, 'report.html', context={'report': report})

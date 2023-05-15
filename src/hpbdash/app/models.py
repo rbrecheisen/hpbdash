@@ -7,6 +7,8 @@ from django.conf import settings
 from django.dispatch import receiver
 
 
+"""-------------------------------------------------------------------------------------------------------------------
+"""
 class QueryModel(models.Model):
 
     name = models.CharField(max_length=1024)
@@ -14,6 +16,8 @@ class QueryModel(models.Model):
     sql_statement = models.CharField(max_length=2048)
     
     
+"""-------------------------------------------------------------------------------------------------------------------
+"""
 class QueryResultModel(models.Model):
     
     query = models.ForeignKey('QueryModel', on_delete=models.CASCADE)
@@ -24,9 +28,6 @@ class QueryResultModel(models.Model):
         df = df.fillna('unknown')
         return df
     
-    def __str__(self):
-        return f'QueryResult(Query("{self.query.name}"))'
-    
 
 @receiver(models.signals.post_delete, sender=QueryResultModel)
 def query_result_post_delete(sender, instance, **kwargs):
@@ -35,11 +36,18 @@ def query_result_post_delete(sender, instance, **kwargs):
         os.remove(instance.result_file)
 
 
+"""-------------------------------------------------------------------------------------------------------------------
+"""
 class ReportModel(models.Model):    
 
     name = models.CharField(max_length=1024, unique=True)
     start_date = models.CharField(max_length=10)
     end_date = models.CharField(max_length=10)
 
-    def __str__(self):
-        return f'{self.name} [{self.start_date} - {self.end_date}]'
+
+"""-------------------------------------------------------------------------------------------------------------------
+"""
+class ReportItemModel(models.Model):
+
+    report = models.ForeignKey('ReportModel', on_delete=models.CASCADE)
+    sql_statement = models.CharField(max_length=1024)

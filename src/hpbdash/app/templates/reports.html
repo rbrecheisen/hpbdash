@@ -14,13 +14,11 @@
                         </tr>
                         {% for report in reports %}
                             <tr>
-                                <td>
-                                    {{ report.name }}
-                                </td>
+                                <td>{{ report.name }}</td>
                                 {%  if user.is_staff %}
                                     <td>
                                         [<a href="/reports/{{ report.id }}/delete">delete</a>]
-                                        [<a href="/reports/{{ report.id }}/generate_content">generate content</a>]
+                                        [<a href="/reports/{{ report.id }}/render">render</a>]
                                     </td>
                                 {% else %}
                                     <td></td>
