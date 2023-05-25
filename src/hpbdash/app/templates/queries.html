@@ -36,16 +36,18 @@
                 <div class="card-body">
                     <form action="/reports/create" method="post", enctype="multipart/form-data">
                         {% csrf_token %}
-                        Time period (yyyy-mm-dd)<br>
-                        <input style="margin-top: 10px; margin-bottom: 10px; width: 400px;" type="text" name="start_date" placeholder="Enter start date" value="2018-05-01"><br>
-                        <input style="margin-bottom: 10px; width: 400px;" type="text" name="end_date" placeholder="Enter end date" value="2018-07-01"><br>
-                        To create a report, specify a time period above, select the queries you want and click the button below:<br>
-                        <button style="margin-top: 10px;" type="submit" class="btn btn-primary">Create report</button>
+                        <input style="margin-bottom: 10px; width: 300px;" type="text" name="report_name" placeholder="Enter report name" /><br>
+                        <b>Time period (yyyy-mm-dd)</b><br>
+                        <input style="margin-top: 10px; margin-bottom: 10px; width: 300px;" type="text" name="start_date" placeholder="Enter start date" /><br>
+                        <input style="margin-bottom: 10px; width: 300px;" type="text" name="end_date" placeholder="Enter end date" /><br>
+                        To create a report from the selected queries, and specified time period, click the button below:<br>
+                        <button style="margin-top: 10px; margin-bottom: 10px;" type="submit" class="btn btn-primary">Create report</button><br>
+                        The time period specified above will be automatically applied to any queries you run.<br>
                         <table style="margin-top: 10px;" class="table">
                             <tr>
                                 <th></th>
-                                <th>Database</th>
-                                <th>Name and SQL</th>
+                                <!-- <th>Name</th> -->
+                                <th>Query</th>
                                 <th>Commands</th>
                             </tr>
                             {% for query in queries %}

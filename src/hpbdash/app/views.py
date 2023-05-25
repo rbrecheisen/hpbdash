@@ -7,8 +7,12 @@ from django.utils import timezone
 from django.core.files.storage import default_storage
 from django.contrib.auth.decorators import login_required
 
+<<<<<<< HEAD
 from .models import QueryModel, QueryResultModel, ReportModel, ReportItemModel
 from .reports.report1 import ReportRenderer
+=======
+from .models import QueryModel, QueryResultModel, ReportModel
+>>>>>>> 3c13474 (saving work)
 
 from barbell2_castor import CastorQueryRunner
 
@@ -78,6 +82,14 @@ def get_result(request, result_id):
     df = query_result.as_df()
     return render(request, 'result.html', context={
         'query': query_result.query, 'query_result': query_result, 'nr_rows': len(df.index), 'columns': df.columns, 'data': df.to_numpy()})
+
+
+"""-------------------------------------------------------------------------------------------------------------------
+"""
+def delete_result(request, result_id):
+    query_result = QueryResultModel.objects.get(pk=result_id)
+    query_result.delete()
+    return redirect('/queries/')
     
     
 """-------------------------------------------------------------------------------------------------------------------
@@ -105,52 +117,62 @@ def get_reports(request):
     return render(request, 'reports.html', context={'reports': reports})
 
 
-"""-------------------------------------------------------------------------------------------------------------------
-"""
-def create_report(request):
-    # create report object
-    end_date = request.POST.get('end_date')
-    start_date = request.POST.get('start_date')
-    timestamp = timezone.now().strftime('%Y%m%d%H%M%S')
-    report = ReportModel.objects.create(name=f'report-{timestamp}', start_date=start_date, end_date=end_date)    
-    # select queries
-    queries = QueryModel.objects.all()
-    selected_queries = []
-    for query in queries:
-        query_checkbox_id = f'{query.id}_cbx'
-        if request.POST.get(query_checkbox_id, None) is not None:
-            selected_queries.append(query)
-    # update selected queries with BETWEEN dates info
-    for query in selected_queries:
-        sql_statement = query.sql_statement
-        if 'WHERE' in sql_statement:
-            items = query.sql_statement.split('WHERE')
-            select = items[0]
-            where_clause = items[1]
-            where_clause += f'WHERE {settings.CASTOR_DATOK_NAMES[query.database]} BETWEEN "{start_date}" AND "{end_date}" {where_clause}'
-            sql_statement = select + where_clause
-            if not sql_statement.endswith(';'):
-                sql_statement += ';'
-        else:
-            if sql_statement.endswith(';'):
-                sql_statement = sql_statement[:-1]
-            sql_statement += f' WHERE {settings.CASTOR_DATOK_NAMES[query.database]} BETWEEN "{start_date}" AND "{end_date}";'
-        ReportItemModel.objects.create(report=report, sql_statement=sql_statement)
-    return redirect('/reports/')
+# """-------------------------------------------------------------------------------------------------------------------
+# """
+# def create_report(request):
+# <<<<<<< HEAD
+#     # create report object
+#     end_date = request.POST.get('end_date')
+#     start_date = request.POST.get('start_date')
+#     timestamp = timezone.now().strftime('%Y%m%d%H%M%S')
+#     report = ReportModel.objects.create(name=f'report-{timestamp}', start_date=start_date, end_date=end_date)    
+#     # select queries
+#     queries = QueryModel.objects.all()
+#     selected_queries = []
+#     for query in queries:
+#         query_checkbox_id = f'{query.id}_cbx'
+#         if request.POST.get(query_checkbox_id, None) is not None:
+#             selected_queries.append(query)
+#     # update selected queries with BETWEEN dates info
+#     for query in selected_queries:
+#         sql_statement = query.sql_statement
+#         if 'WHERE' in sql_statement:
+#             items = query.sql_statement.split('WHERE')
+#             select = items[0]
+#             where_clause = items[1]
+#             where_clause += f'WHERE {settings.CASTOR_DATOK_NAMES[query.database]} BETWEEN "{start_date}" AND "{end_date}" {where_clause}'
+#             sql_statement = select + where_clause
+#             if not sql_statement.endswith(';'):
+#                 sql_statement += ';'
+#         else:
+#             if sql_statement.endswith(';'):
+#                 sql_statement = sql_statement[:-1]
+#             sql_statement += f' WHERE {settings.CASTOR_DATOK_NAMES[query.database]} BETWEEN "{start_date}" AND "{end_date}";'
+#         ReportItemModel.objects.create(report=report, sql_statement=sql_statement)
+#     return redirect('/reports/')
 
 
-"""-------------------------------------------------------------------------------------------------------------------
-"""
-def delete_report(request, report_id):
-    report = ReportModel.objects.get(pk=report_id)
-    report.delete()
-    return redirect('/reports/')
+# """-------------------------------------------------------------------------------------------------------------------
+# """
+# def delete_report(request, report_id):
+#     report = ReportModel.objects.get(pk=report_id)
+#     report.delete()
+#     return redirect('/reports/')
 
 
-"""-------------------------------------------------------------------------------------------------------------------
-"""
-def render_report(request, report_id):
-    report = ReportModel.objects.get(pk=report_id)
-    report_renderer = ReportRenderer(report)
-    report_renderer.execute()
-    return render(request, 'report.html', context={'report': report})
+# """-------------------------------------------------------------------------------------------------------------------
+# """
+# def render_report(request, report_id):
+#     report = ReportModel.objects.get(pk=report_id)
+#     report_renderer = ReportRenderer(report)
+#     report_renderer.execute()
+#     return render(request, 'report.html', context={'report': report})
+# =======
+#     report_name = request.POST.get('report_name')
+#     report_start_date = request.POST.get('start_date')
+#     report_end_date = request.POST.get('end_date')
+#     report = ReportModel.objects.create(report_name, report_start_date, report_end_date)
+
+#     # how do I get the queries checked for this report from the queries.html
+#     return redirect('/queries/')
+# >>>>>>> 3c13474 (saving work)

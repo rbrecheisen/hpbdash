@@ -12,13 +12,12 @@
                     <a href="/results/{{ query_result.id }}/delete">[delete]</a>
                 </div>
                 <div class="card-body">
-                    {{ query.sql_statement }}<br>
+                    Query: {{ query.sql_statement }}<br>
                     <br>
-                    <form action="/results/{{ query_result.id }}/show" method="post" enctype="multipart/form-data">
+                    <form action="/queries/{{ query.id }}/results/{{ query_result.id }}/delete" method="post" enctype="multipart/form-data">
                         {% csrf_token %}
-                        <button style="margin-top: 10px; margin-bottom: 10px; width: 250px;" type="submit" class="btn btn-primary">Show selected</button><br>
+                        <button style="margin-top: 10px; margin-bottom: 10px; width: 250px;" type="submit" class="btn btn-primary">Delete results</button><br>
                         <table class="data-table">
-                            {% for column in columns %}<th><input type="checkbox" name="{{ column }}_cbx"/><br>{{ column }}</th>{% endfor %}
                             {% for row in data %}
                                 <tr>
                                 {% for item in row %}

@@ -36,18 +36,27 @@ def query_result_post_delete(sender, instance, **kwargs):
         os.remove(instance.result_file)
 
 
-"""-------------------------------------------------------------------------------------------------------------------
-"""
-class ReportModel(models.Model):    
+# """-------------------------------------------------------------------------------------------------------------------
+# """
+# class ReportModel(models.Model):    
 
-    name = models.CharField(max_length=1024, unique=True)
-    start_date = models.CharField(max_length=10)
-    end_date = models.CharField(max_length=10)
+# <<<<<<< HEAD
+#     name = models.CharField(max_length=1024, unique=True)
+#     start_date = models.CharField(max_length=10)
+#     end_date = models.CharField(max_length=10)
 
 
-"""-------------------------------------------------------------------------------------------------------------------
-"""
-class ReportItemModel(models.Model):
+# """-------------------------------------------------------------------------------------------------------------------
+# """
+# class ReportItemModel(models.Model):
 
-    report = models.ForeignKey('ReportModel', on_delete=models.CASCADE)
-    sql_statement = models.CharField(max_length=1024)
+#     report = models.ForeignKey('ReportModel', on_delete=models.CASCADE)
+#     sql_statement = models.CharField(max_length=1024)
+# =======
+#     name = models.CharField(max_length=1024)
+#     start_date = models.DateField()
+#     end_date = models.DateField()
+
+#     def __str__(self):
+#         return f'{self.name} ({self.start_date}, {self.end_date})'
+# >>>>>>> 3c13474 (saving work)
