@@ -7,12 +7,8 @@ from django.utils import timezone
 from django.core.files.storage import default_storage
 from django.contrib.auth.decorators import login_required
 
-<<<<<<< HEAD
-from .models import QueryModel, QueryResultModel, ReportModel, ReportItemModel
-from .reports.report1 import ReportRenderer
-=======
+# from .reports.report1 import ReportRenderer
 from .models import QueryModel, QueryResultModel, ReportModel
->>>>>>> 3c13474 (saving work)
 
 from barbell2_castor import CastorQueryRunner
 
@@ -32,7 +28,7 @@ def create_query(request):
     QueryModel.objects.create(
         name=request.POST.get('name'),
         database=request.POST.get('database'),
-        sql_statement=request.POST.get('sql_statement')
+        sql_statement=request.POST.get('sql')
         )
     return redirect('/queries/')
 
@@ -60,7 +56,7 @@ def execute_query(request, query_id):
         ]})    
     # run query and store results in csv file
     query_runner = CastorQueryRunner(db_file)
-    query_runner.execute(query.sql_statement)
+    query_runner.execute(query.sql)
     timestamp = timezone.now().strftime('%Y%m%d%H%M%S')
     query_result_file = os.path.join(settings.CASTOR_QUERY_RESULT_DIR, f'query-{query_id}-result-{timestamp}.csv')
     query_result = QueryResultModel.objects.create(

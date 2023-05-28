@@ -16,7 +16,7 @@
                             <option value="dhba">dhba</option>
                         </select><br>
                         <input style="margin-top: 10px; width: 400px;" type="text" name="name" placeholder="Enter query title/description" /><br>
-                        <textarea style="margin-top: 10px; width: 400px;" name="sql_statement" placeholder="Enter SQL statement" rows="5" cols="50"></textarea><br>
+                        <textarea style="margin-top: 10px; width: 400px;" name="sql" placeholder="Enter SQL statement" rows="5" cols="50"></textarea><br>
                         <button style="margin-top: 10px; width: 150px;" type="submit" class="btn btn-primary">Add</button><br>
                         <br>
                         Examples:<br>
@@ -57,7 +57,7 @@
                                     <td>
                                         {{ query.name }}<br>
                                         <br>
-                                        <p style="font-size: 9px;">{{ query.sql_statement }}</p>
+                                        <p style="font-size: 9px;">{{ query.sql }}</p>
                                     </td>
                                     {%  if user.is_staff %}
                                         <td>
