@@ -1,18 +1,27 @@
 TODO
 ====
 
+- Create two separate Prefect pipelines for DPCA and DHBA
 - Check scripts-ralph/castor/20230313_pancreas_uitdraai_stefan
 - Check mails "Castor uitdraai" (29 maart 2023)
 
 DESIGN
 ======
 
-What I have so far is a mechanism to execute arbitrary SQL queries. 
-In the end I need to a have set of such queries that together provide
-all the information needed by the surgeons. What each query has in 
-common is the time period. Since you don't want to specify the time
-period for each individual query, we can create a form that allows the
-user to specify a start and end date easily.
+I need a ReportModel class to persistently store a number of
+fields that a ReportRenderer class can use to represent the 
+data visually. 
 
-Each query in the list, or report, will then be executed with this 
-time period. 
+class ReportModel:
+    queries = model.ManyToManyField(QueryModel)
+
+q1 = QueryModel()
+q1.save()
+q2 = QueryModel()
+q2.save()
+
+report = ReportModel()
+report.save()
+report.queries.add(q1)
+report.queries.add(q2)
+report.save()
