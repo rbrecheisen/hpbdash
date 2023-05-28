@@ -40,13 +40,10 @@
                         <b>Time period (yyyy-mm-dd)</b><br>
                         <input style="margin-top: 10px; margin-bottom: 10px; width: 300px;" type="text" name="start_date" placeholder="Enter start date" /><br>
                         <input style="margin-bottom: 10px; width: 300px;" type="text" name="end_date" placeholder="Enter end date" /><br>
-                        To create a report from the selected queries, and specified time period, click the button below:<br>
                         <button style="margin-top: 10px; margin-bottom: 10px;" type="submit" class="btn btn-primary">Create report</button><br>
-                        The time period specified above will be automatically applied to any queries you run.<br>
                         <table style="margin-top: 10px;" class="table">
                             <tr>
                                 <th></th>
-                                <!-- <th>Name</th> -->
                                 <th>Query</th>
                                 <th>Commands</th>
                             </tr>
@@ -55,18 +52,13 @@
                                     <td><input type="checkbox" name="{{ query.id }}_cbx"></td>
                                     <td>{{ query.database }}</td>
                                     <td>
-                                        {{ query.name }}<br>
-                                        <br>
+                                        {{ query.name }}<br><br>
                                         <p style="font-size: 9px;">{{ query.sql }}</p>
                                     </td>
-                                    {%  if user.is_staff %}
-                                        <td>
-                                            [<a href="/queries/{{ query.id }}/delete">delete</a>]
-                                            [<a href="/queries/{{ query.id }}/run">run</a>]
-                                        </td>
-                                    {% else %}
-                                        <td></td>
-                                    {%  endif %}
+                                    <td>
+                                        [<a href="/queries/{{ query.id }}/delete">delete</a>]
+                                        [<a href="/queries/{{ query.id }}/run">run</a>]
+                                    </td>
                                 </tr>
                             {% endfor %}
                         </table>
