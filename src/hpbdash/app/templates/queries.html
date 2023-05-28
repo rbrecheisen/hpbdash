@@ -11,7 +11,7 @@
                     <form action="/queries/create" method="post" enctype="multipart/form-data">
                         {% csrf_token %}
                         <select class="form-select" name="database">
-                            <option selected>Please select database for your query</option>
+                            <option selected>Please select database for your query:</option>
                             <option value="dpca">dpca</option>
                             <option value="dhba">dhba</option>
                         </select><br>
@@ -44,6 +44,7 @@
                         <table style="margin-top: 10px;" class="table">
                             <tr>
                                 <th></th>
+                                <th>Database</th>
                                 <th>Query</th>
                                 <th>Commands</th>
                             </tr>

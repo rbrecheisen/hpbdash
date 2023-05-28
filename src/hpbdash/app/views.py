@@ -27,7 +27,7 @@ def create_query(request):
     QueryModel.objects.create(
         name=request.POST.get('name'),
         database=request.POST.get('database'),
-        sql_statement=request.POST.get('sql')
+        sql=request.POST.get('sql')
         )
     return redirect('/queries/')
 
@@ -54,6 +54,13 @@ def execute_query(request, query_id):
             f'Database file {db_file} not found or empty. Did Prefect pipeline run?'
         ]})    
     # run query and store results in csv file
+    # from pysqlite3 import dbapi2 as sqlite3
+    # db = sqlite3.connect(db_file)
+    # cursor = db.cursor()
+    # data = cursor.execute('select dpca_typok from data;')
+    # for record in data:
+    #     print(record)
+    # return redirect('/queries/')
     query_runner = CastorQueryRunner(db_file)
     query_runner.execute(query.sql)
     timestamp = timezone.now().strftime('%Y%m%d%H%M%S')
