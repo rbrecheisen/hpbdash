@@ -21,6 +21,7 @@ CLIENT_SECRET = open(CLIENT_SECRET_FILE, 'r').readline().strip()
 OUTPUT_DB_FILE_DPCA = '/tmp/castor/dpca.db'
 OUTPUT_DB_FILE_DHBA = '/tmp/castor/dhba.db'
 OUTPUT_CSV_FILE_DPCA = '/tmp/castor/dpca.csv'
+OUTPUT_JSON_FILE_DPCA = '/tmp/castor/dpca.json'
 LOGGER = logging.getLogger(__name__)
 
 logging.basicConfig(level=logging.INFO)
@@ -32,13 +33,22 @@ class CastorToCSV:
         self.study_name = study_name
         self.client_id = client_id
         self.client_secret = client_secret
+
+    def get_dtype(field_type):
+        if field_type == 'radio' or field_type == 'checkbox':
+            return 'bool'
+        if field_type == 'numeric':
+            return 'int64'
+        return 'str'
     
     def execute(self):
         castor2dict = CastorToDict(self.study_name, self.client_id, self.client_secret)
         data = castor2dict.execute()
         df_data = {}
+        df_data_types = {}
         for field_name in data.keys():
             df_data[field_name] = data[field_name]['field_values']
+            df_data_types[field_name].dtype = self.get_dtype(data[field_name]['field_type'])
         df = pd.DataFrame(data=df_data)
         df.to_csv(OUTPUT_CSV_FILE_DPCA, index=False, sep=';')
         
