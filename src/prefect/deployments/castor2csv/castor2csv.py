@@ -20,6 +20,7 @@ if not os.path.isfile(CLIENT_SECRET_FILE):
 CLIENT_SECRET = open(CLIENT_SECRET_FILE, 'r').readline().strip()
 OUTPUT_DB_FILE_DPCA = '/tmp/castor/dpca.db'
 OUTPUT_DB_FILE_DHBA = '/tmp/castor/dhba.db'
+OUTPUT_CSV_FILE_DPCA = '/tmp/castor/dpca.csv'
 LOGGER = logging.getLogger(__name__)
 
 logging.basicConfig(level=logging.INFO)
@@ -39,7 +40,7 @@ class CastorToCSV:
         for field_name in data.keys():
             df_data[field_name] = data[field_name]['field_values']
         df = pd.DataFrame(data=df_data)
-        df.to_csv('/Users/Ralph/Desktop/castor2csv.csv', index=False, sep=';')
+        df.to_csv(OUTPUT_CSV_FILE_DPCA, index=False, sep=';')
         
 
 @task(name='extract_dpca')
