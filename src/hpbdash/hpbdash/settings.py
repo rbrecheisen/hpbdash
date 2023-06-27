@@ -22,6 +22,11 @@ CASTOR_DB_FILES = {
     'dhba': '/tmp/castor/dhba.db',
 }
 
+CASTOR_JSON_FILES = {
+    'dpca': '/tmp/castor/dpca.json',
+    'dhba': '/tmp/castor/dhba.json',
+}
+
 CASTOR_DATOK_NAMES = {
     'dpca': 'dpca_datok',
     'dhba': 'dhba_datok1',

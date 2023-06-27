@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-10">
+            <div class="card" style="margin-top: 10px;">
+                <div class="card-header">
+                    <b>Queries</b>
+                </div>
+                <div class="card-body">
+                    <form action="/queries/create" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <select class="form-select" name="database">
+                            <option selected>Please select database for your query:</option>
+                            <option value="dpca">dpca</option>
+                            <option value="dhba">dhba</option>
+                        </select><br>
+                        <input style="margin-top: 10px; width: 400px;" type="text" name="name" placeholder="Enter query title/description" /><br>
+                        <textarea style="margin-top: 10px; width: 400px;" name="sql" placeholder="Enter SQL statement" rows="5" cols="50"></textarea><br>
+                        <button style="margin-top: 10px; width: 150px;" type="submit" class="btn btn-primary">Add</button><br>
+                        <br>
+                        Examples:<br>
+                        <br>
+                        - SELECT dpca_idcode FROM data WHERE dpca_datok BETWEEN "2018-05-01" AND "2018-07-01";<br>
+                        - SELECT dpca_gebjaar, dpca_typok FROM data WHERE dpca_lokalisatie = 4 OR dpca_lokalisatie = 5;<br>
+                        - SELECT dhba_idcode FROM data WHERE dhba_datok BETWEEN "2018-05-01" AND "2018-07-01";<br>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-10">
+            <div class="card" style="margin-top: 10px;">
+                <div class="card-header">Available queries</div>
+                <div class="card-body">
+                    <form action="/reports/create" method="post", enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <input style="margin-bottom: 10px; width: 300px;" type="text" name="report_name" placeholder="Enter report name" /><br>
+                        <b>Time period (yyyy-mm-dd)</b><br>
+                        <input style="margin-top: 10px; margin-bottom: 10px; width: 300px;" type="text" name="start_date" placeholder="Enter start date" /><br>
+                        <input style="margin-bottom: 10px; width: 300px;" type="text" name="end_date" placeholder="Enter end date" /><br>
+                        <button style="margin-top: 10px; margin-bottom: 10px;" type="submit" class="btn btn-primary">Create report</button><br>
+                        <table style="margin-top: 10px;" class="table">
+                            <tr>
+                                <th></th>
+                                <th>Database</th>
+                                <th>Query</th>
+                                <th>Commands</th>
+                            </tr>
+                            {% for query in queries %}
+                                <tr>
+                                    <td><input type="checkbox" name="{{ query.id }}_cbx"></td>
+                                    <td>{{ query.database }}</td>
+                                    <td>
+                                        {{ query.name }}<br><br>
+                                        <p style="font-size: 9px;">{{ query.sql }}</p>
+                                    </td>
+                                    <td>
+                                        [<a href="/queries/{{ query.id }}/delete">delete</a>]
+                                        [<a href="/queries/{{ query.id }}/run">run</a>]
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

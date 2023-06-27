@@ -1,4 +1,6 @@
 import os
+import json
+import pandas as pd
 
 from django.shortcuts import render, redirect
 from django.views.static import serve
@@ -12,28 +14,18 @@ from .models import QueryModel, QueryResultModel, ReportModel
 from barbell2_castor import CastorQueryRunner
 
 
-"""-------------------------------------------------------------------------------------------------------------------
-"""
 @login_required
 def get_queries(request):
     queries = QueryModel.objects.all()
     return render(request, 'queries.html', context={'queries': queries})
 
 
-"""-------------------------------------------------------------------------------------------------------------------
-"""
 @login_required
 def create_query(request):
-    QueryModel.objects.create(
-        name=request.POST.get('name'),
-        database=request.POST.get('database'),
-        sql=request.POST.get('sql')
-        )
+    QueryModel.objects.create(name=request.POST.get('name'), sql=request.POST.get('sql'))
     return redirect('/queries/')
 
 
-"""-------------------------------------------------------------------------------------------------------------------
-"""
 @login_required
 def delete_query(request, query_id):
     query = QueryModel.objects.get(pk=query_id)
@@ -41,37 +33,24 @@ def delete_query(request, query_id):
     return redirect('/queries/')
 
 
-"""-------------------------------------------------------------------------------------------------------------------
-"""
 @login_required
 def execute_query(request, query_id):
     # get query
     query = QueryModel.objects.get(pk=query_id)
-    # check if query database exists
-    db_file = settings.CASTOR_DB_FILES[query.database]
-    if not os.path.isfile(db_file) or os.path.getsize(db_file) == 0:
-        return render(request, 'errors.html', context={'errors': [
-            f'Database file {db_file} not found or empty. Did Prefect pipeline run?'
-        ]})    
-    # run query and store results in csv file
-    # from pysqlite3 import dbapi2 as sqlite3
-    # db = sqlite3.connect(db_file)
-    # cursor = db.cursor()
-    # data = cursor.execute('select dpca_typok from data;')
-    # for record in data:
-    #     print(record)
-    # return redirect('/queries/')
-    query_runner = CastorQueryRunner(db_file)
-    query_runner.execute(query.sql)
-    timestamp = timezone.now().strftime('%Y%m%d%H%M%S')
-    query_result_file = os.path.join(settings.CASTOR_QUERY_RESULT_DIR, f'query-{query_id}-result-{timestamp}.csv')
-    query_result = QueryResultModel.objects.create(
-        query=query,
-        result_file=query_result_file,
-    )
-    query_runner.to_csv(query_result.result_file)
+    # load JSON data Castor
+    with open(settings.CASTOR_JSON_FILES['dpca'], 'r') as f:
+        data = json.load(f)
+    df_data = {}
+    for field_name in data.keys():
+        df_data[field_name] = data[field_name]['field_values']
+    df = pd.DataFrame(data=df_data)
+    for field_name in data.keys():
+        if data[field_name]['field_type'] == 'date':
+            df[field_name] = pd.to_datetime(df[field_name], dayfirst=True, errors='coerce')
+    df2 = df.query(query.sql)
+    print(df2)
     # redirect to query result page
-    return redirect(f'/results/{query_result.id}/')
+    return redirect('/queries/')
     
     
 """-------------------------------------------------------------------------------------------------------------------

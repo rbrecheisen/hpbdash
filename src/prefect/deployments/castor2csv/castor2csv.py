@@ -37,19 +37,21 @@ class CastorToCSV:
         self.client_secret = client_secret
 
     def execute(self):
-        castor2dict = CastorToDict(self.study_name, self.client_id, self.client_secret)
-        data = castor2dict.execute()
+        # castor2dict = CastorToDict(self.study_name, self.client_id, self.client_secret)
+        # data = castor2dict.execute()
+        # with open('data.json', 'w') as f:
+        #     json.dump(data, f)
+        with open('data.json', 'r') as f:
+            data = json.load(f)
         df_data = {}
         for field_name in data.keys():
             df_data[field_name] = data[field_name]['field_values']
         df = pd.DataFrame(data=df_data)
         for field_name in data.keys():
             if data[field_name]['field_type'] == 'date':
-                # df[field_name] = pd.to_datetime(df[field_name])
-                for item in df[field_name]:
-                    if item != '':
-                        datetime.datetime.strptime(item, '%d-%m-%Y')
-        df.to_csv(OUTPUT_CSV_FILE_DPCA, index=False, sep=';')
+                df[field_name] = pd.to_datetime(df[field_name], dayfirst=True, errors='coerce')
+        df2 = df.query('dpca_gebdat >= "1984-01-01" and dpca_gebdat <= "2000-01-01"')
+        print(df2)
         
 
 @task(name='extract_dpca')
@@ -64,4 +66,6 @@ def castor2csv():
 
 
 if __name__ == '__main__':
-    castor2csv()
+    extractor = CastorToCSV(STUDY_DPCA, CLIENT_ID, CLIENT_SECRET)
+    extractor.execute()
+    # castor2csv()
