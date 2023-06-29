@@ -3,7 +3,7 @@ import json
 from barbell2_castor.castor2sqlite import CastorToDict
 
 
-class CastorToJSON:
+class CastorToJson:
 
     def __init__(self, study_name, client_id, client_secret, output_json):
         self.study_name = study_name
@@ -16,3 +16,15 @@ class CastorToJSON:
         data = castor2dict.execute()
         with open(self.output_json, 'w') as f:
             json.dump(data, f)
+
+
+class CastorJsonToDataFrame:
+    pass
+
+
+class CastorDataFrameQuery:
+    pass
+
+
+class CastorQueryResult:
+    pass

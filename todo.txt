@@ -1,27 +1,5 @@
 TODO
 ====
 
-- Create two separate Prefect pipelines for DPCA and DHBA
-- Check scripts-ralph/castor/20230313_pancreas_uitdraai_stefan
-- Check mails "Castor uitdraai" (29 maart 2023)
-
-DESIGN
-======
-
-I need a ReportModel class to persistently store a number of
-fields that a ReportRenderer class can use to represent the 
-data visually. 
-
-class ReportModel:
-    queries = model.ManyToManyField(QueryModel)
-
-q1 = QueryModel()
-q1.save()
-q2 = QueryModel()
-q2.save()
-
-report = ReportModel()
-report.save()
-report.queries.add(q1)
-report.queries.add(q2)
-report.save()
+- Implement classes CastorJsonToDataFrame, CastorDataFrameQuery and CastorQueryResult
+- [x] Create two separate Prefect pipelines for DPCA and DHBA

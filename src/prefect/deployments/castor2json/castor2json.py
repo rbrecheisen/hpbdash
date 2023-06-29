@@ -2,7 +2,7 @@ import os
 import logging
 
 from prefect import flow, task
-from castor import CastorToJSON
+from castor import CastorToJson
 
 
 STUDY_DPCA = 'ESPRESSO_v2.0_DPCA'
@@ -26,13 +26,13 @@ logging.basicConfig(level=logging.INFO)
 
 @task(name='extract_dpca')
 def extract_dpca():
-    extractor = CastorToJSON(STUDY_DPCA, CLIENT_ID, CLIENT_SECRET, OUTPUT_JSON_FILE_DPCA)
+    extractor = CastorToJson(STUDY_DPCA, CLIENT_ID, CLIENT_SECRET, OUTPUT_JSON_FILE_DPCA)
     extractor.execute()
 
 
 @task(name='extract_dba')
 def extract_dhba():
-    extractor = CastorToJSON(STUDY_DHBA, CLIENT_ID, CLIENT_SECRET, OUTPUT_JSON_FILE_DHBA)
+    extractor = CastorToJson(STUDY_DHBA, CLIENT_ID, CLIENT_SECRET, OUTPUT_JSON_FILE_DHBA)
     extractor.execute()
 
 
