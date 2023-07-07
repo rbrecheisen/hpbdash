@@ -34,13 +34,10 @@ class CastorJsonToDataFrame:
         df = pd.DataFrame(data=df_data)
         for field_name in data.keys():
             if data[field_name]['field_type'] == 'date':
+                # df[field_name] = pd.to_datetime(df[field_name], dayfirst=True, format='%Y-%m-%d', errors='coerce')
                 df[field_name] = pd.to_datetime(df[field_name], dayfirst=True, errors='coerce')
         return df
     
-
-class CastorDataFrameQueryBuilder:
-    pass
-
 
 class CastorDataFrameQueryRunner:
 
@@ -48,4 +45,14 @@ class CastorDataFrameQueryRunner:
         self.df = df
     
     def execute(self, query):
-        return self.df.query(query)
+        # get columns to be selected in the query result dataframe
+        # they're between SELECT and WHERE
+        query = query.lower()
+        idx_start = 7
+        idx_end = query.index('where')
+        columns = [x.strip() for x in query[idx_start:idx_end].split(',')]
+        # get filter conditions after WHERE clause
+        filter_conditions = query[idx_end+6:]
+        df = self.df.query(filter_conditions)
+        df = df[columns]
+        return df

@@ -17,14 +17,14 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-CASTOR_DB_FILES = {
-    'dpca': '/tmp/castor/dpca.db',
-    'dhba': '/tmp/castor/dhba.db',
-}
-
 CASTOR_JSON_FILES = {
     'dpca': '/tmp/castor/dpca.json',
     'dhba': '/tmp/castor/dhba.json',
+}
+
+CASTOR_CSV_FILES = {
+    'dpca': '/tmp/castor/dpca.csv',
+    'dhba': '/tmp/castor/dhba.csv',
 }
 
 CASTOR_DATOK_NAMES = {
