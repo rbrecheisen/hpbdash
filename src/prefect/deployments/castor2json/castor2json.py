@@ -30,7 +30,7 @@ def extract_dpca():
     extractor.execute()
 
 
-@task(name='extract_dba')
+@task(name='extract_dhba')
 def extract_dhba():
     extractor = CastorToJson(STUDY_DHBA, CLIENT_ID, CLIENT_SECRET, OUTPUT_JSON_FILE_DHBA)
     extractor.execute()
