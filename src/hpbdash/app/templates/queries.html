@@ -11,9 +11,9 @@
                         <textarea style="margin-top: 10px; width: 400px;" name="query" placeholder="Enter query" rows="5" cols="50"></textarea><br>
                         <button style="margin-top: 10px; width: 150px;" type="submit" class="btn btn-primary">Run</button><br>
                         <br>
-                        Examples:<br>
+                        Example:<br>
                         <br>
-                        (1) SELECT dpca_idcode, dpca_datok WHERE dpca_datok >= "2018-05-01" AND dpca_datok <= "2018-07-01"<br>
+                        SELECT dpca_idcode, dpca_datok WHERE (dpca_datok >= "2018-05-01" AND dpca_datok <= "2018-07-01") OR (dpca_datok >= "2017-01-01" AND dpca_datok <= "2017-04-01")<br>
                     </form>
                 </div>
             </div>

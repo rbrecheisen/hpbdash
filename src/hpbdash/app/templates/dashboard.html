@@ -7,6 +7,10 @@
                 <div class="card-header"><b>HPB dashboard</b></div>
                 <div class="card-body">
                     <!-- Specify what you want to see -->
+                    <form action="/dashboard/update" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <button style="margin-top: 10px; width: 150px;" type="submit" class="btn btn-primary">Update</button><br>
+                    </form>
                 </div>
             </div>
         </div>
